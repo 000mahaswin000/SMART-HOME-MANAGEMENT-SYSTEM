@@ -1,0 +1,73 @@
+SMART HOME AUTOMATION SIMULATOR - HOW TO RUN
+==============================================
+
+REQUIREMENTS: Java 17 or later (JDK, not just JRE) on your machine.
+Check with: java -version   and   javac -version
+
+Compiled and verified with ZERO errors on OpenJDK 21 (only harmless
+[serial]/[this-escape] lint notes, which are normal for Swing code
+and present in any Swing project). No external dependencies -
+standard library only, including the dashboard's donut/bar charts,
+which are hand-painted with Graphics2D rather than a charting library.
+
+TO COMPILE AND RUN (from this folder, in a terminal):
+
+  Windows (PowerShell / cmd):
+    cd src
+    javac -d ..\out (Get-ChildItem -Recurse -Filter *.java).FullName
+    cd ..\out
+    java smarthome.Main
+
+  macOS / Linux:
+    cd src
+    javac -d ../out $(find . -name "*.java")
+    cd ../out
+    java smarthome.Main
+
+A window titled "Smart Home Automation Simulator" opens, sized
+1280x820, with a dark-themed UI: an icon sidebar on the left listing
+9 sections (Dashboard, Rooms, Devices, Sensors, Automation,
+Schedules, Security, Alerts, Logs), and a header bar across the top
+with a global search box, save status, a live security-armed/
+disarmed indicator, and a clock.
+
+On first launch, it auto-creates 6 rooms, 10 devices, 5 sensors, 5
+automation rules, and 3 schedules, and saves everything to
+data/home.dat when you close the window. Closing and reopening
+reloads that saved state instead of re-seeding. Delete
+data/home.dat if you want to see the first-launch seed data again.
+
+WHAT'S NEW IN THIS VERSION:
+ - Full dark theme (custom palette/fonts pushed through UIManager),
+   replacing the previous default-grey Swing look.
+ - Sidebar navigation with per-section icons and a live unread-alert
+   badge, replacing the plain tab strip.
+ - Dashboard: 10 stat tiles, a devices-active and sensors-active
+   donut chart, a power-by-room bar chart, and a live recent-events
+   feed - all hand-painted, no charting dependency.
+ - Search/filter boxes on Devices, Sensors, Automation, Schedules,
+   Alerts and Logs, plus a global search box in the header that
+   jumps to and filters the Devices tab.
+ - Rooms tab redesigned as a card grid (one card per room, showing
+   its devices/sensors at a glance) instead of a table.
+ - Security tab redesigned around a large armed/disarmed hero card.
+ - Color-coded status pills throughout (device ON/OFF, alert
+   severity, rule/schedule enabled state) instead of plain text.
+ - Toast notifications for routine confirmations (device added,
+   rule created, saved) instead of always popping a modal dialog.
+ - Ctrl/Cmd+S to save immediately from anywhere in the app.
+
+TESTING STATUS FOR THIS RUN STEP:
+This version has been both compiled AND actually launched and
+visually verified inside my sandbox (previous attempts couldn't get
+a GUI to render there at all - that turned out to be a missing
+system library in that sandbox's Java install, now fixed on my end).
+I captured real screenshots of all 9 sections with live seed data,
+confirmed the dashboard stats/charts populate correctly, confirmed
+alerts/logs/schedules all show correct data, and fixed two real
+layout bugs (a horizontal overflow on the dashboard stat grid, and
+a value that got clipped in the Security stat tile) that only showed
+up once I could actually see it rendered. I'd still recommend a
+quick pass on your own machine, since font rendering and window
+chrome can look slightly different across operating systems, but
+this is meaningfully more verified than the previous version.

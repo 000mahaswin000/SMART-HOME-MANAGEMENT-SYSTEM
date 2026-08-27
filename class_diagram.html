@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Home Automation Simulator — Class Diagram</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-deep:    #0d1117;
+      --bg-base:    #161b22;
+      --bg-surface: #1c2230;
+      --bg-card:    #21293a;
+      --bg-raised:  #2a3347;
+      --border:     #2d3748;
+      --border-hi:  #3d4f6b;
+      --accent:     #3dd6c0;
+      --accent-dim: rgba(61,214,192,.12);
+      --accent2:    #6ea8e8;
+      --accent3:    #a78bfa;
+      --success:    #4cc97a;
+      --warning:    #e8ae3d;
+      --danger:     #e86a6a;
+      --text-1:     #e8ecf1;
+      --text-2:     #9ba7b4;
+      --text-3:     #6b7684;
+      --radius:     12px;
+      --shadow:     0 4px 32px rgba(0,0,0,.55);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-1);
+      min-height: 100vh;
+    }
+
+    /* ── HERO HEADER ── */
+    header {
+      background: linear-gradient(135deg, #0d1117 0%, #131e30 40%, #0d1a25 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 40px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(61,214,192,.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: 20%;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(110,168,232,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .header-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(61,214,192,.3);
+      color: var(--accent);
+      font-size: 11px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 12px; border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    header h1 {
+      font-size: clamp(24px, 4vw, 38px);
+      font-weight: 800;
+      background: linear-gradient(135deg, #e8ecf1 30%, #3dd6c0 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    header p {
+      color: var(--text-2); font-size: 15px; max-width: 620px; line-height: 1.6;
+    }
+    .stats-row {
+      display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px;
+    }
+    .stat-chip {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px 16px;
+      font-size: 13px;
+    }
+    .stat-chip .num { font-weight: 700; color: var(--accent); font-size: 15px; }
+    .stat-chip .lbl { color: var(--text-2); }
+
+    /* ── MAIN LAYOUT ── */
+    main { max-width: 1600px; margin: 0 auto; padding: 36px 32px 80px; }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 13px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--text-3);
+      margin: 48px 0 20px;
+    }
+    .section-title::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* ── PACKAGE CARDS ── */
+    .pkg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px; margin-bottom: 48px;
+    }
+    .pkg-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: border-color .2s, transform .2s;
+      position: relative; overflow: hidden;
+    }
+    .pkg-card::before {
+      content: ''; position: absolute;
+      inset: 0; border-radius: inherit;
+      background: linear-gradient(135deg, var(--pkg-color, var(--accent)) 0%, transparent 60%);
+      opacity: .04; pointer-events: none;
+    }
+    .pkg-card:hover { border-color: var(--border-hi); transform: translateY(-2px); }
+    .pkg-card .pkg-icon {
+      width: 36px; height: 36px;
+      background: var(--accent-dim);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; margin-bottom: 12px;
+    }
+    .pkg-card h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; font-weight: 500;
+      color: var(--accent); margin-bottom: 6px;
+    }
+    .pkg-card p { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+    .pkg-card .class-list {
+      margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .cls-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 500;
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: 4px; padding: 2px 8px;
+      color: var(--text-2);
+    }
+    .cls-tag.abstract { color: var(--warning); border-color: rgba(232,174,61,.25); }
+    .cls-tag.iface    { color: var(--accent2); border-color: rgba(110,168,232,.25); }
+    .cls-tag.enum     { color: var(--accent3); border-color: rgba(167,139,250,.25); }
+
+    /* ── DIAGRAM PANEL ── */
+    .diagram-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .diagram-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .diagram-toolbar .toolbar-title {
+      font-size: 13px; font-weight: 600; color: var(--text-1);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot.r { background: #ff5f57; }
+    .dot.y { background: #ffbd2e; }
+    .dot.g { background: #28c840; }
+    .toolbar-dots { display: flex; gap: 6px; align-items: center; }
+    .zoom-btn {
+      background: var(--bg-raised); border: 1px solid var(--border);
+      color: var(--text-2); border-radius: 6px; padding: 5px 14px;
+      font-size: 12px; cursor: pointer; font-family: inherit;
+      transition: background .15s, color .15s;
+    }
+    .zoom-btn:hover { background: var(--border-hi); color: var(--text-1); }
+    .diagram-body {
+      overflow: auto;
+      padding: 32px;
+      min-height: 400px;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(61,214,192,.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(110,168,232,.04) 0%, transparent 50%),
+        var(--bg-deep);
+    }
+    .diagram-body svg { max-width: 100%; display: block; margin: 0 auto; }
+    #mermaid-wrap { transform-origin: top center; transition: transform .2s; }
+
+    /* ── DESIGN PATTERNS TABLE ── */
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 13px;
+    }
+    thead tr { background: var(--bg-surface); }
+    thead th {
+      text-align: left; padding: 14px 18px;
+      font-size: 11px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--text-3);
+      border-bottom: 1px solid var(--border);
+    }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--bg-surface); }
+    tbody td { padding: 13px 18px; vertical-align: top; }
+    .pattern-badge {
+      display: inline-block;
+      font-weight: 600; font-size: 12px;
+      padding: 3px 10px; border-radius: 6px; white-space: nowrap;
+    }
+    .p-strategy { background: rgba(61,214,192,.12); color: var(--accent); }
+    .p-observer  { background: rgba(110,168,232,.12); color: var(--accent2); }
+    .p-template  { background: rgba(232,174,61,.12); color: var(--warning); }
+    .p-composite { background: rgba(167,139,250,.12); color: var(--accent3); }
+    .p-singleton { background: rgba(76,201,122,.12); color: var(--success); }
+    .p-inherit   { background: rgba(232,106,106,.12); color: var(--danger); }
+    td code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; background: var(--bg-raised);
+      padding: 1px 6px; border-radius: 4px; color: var(--accent);
+    }
+
+    /* ── RELATIONSHIP LEGEND ── */
+    .legend {
+      display: flex; flex-wrap: wrap; gap: 20px;
+      padding: 20px 24px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-top: 24px;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 12px; color: var(--text-2);
+    }
+    .legend-line {
+      width: 36px; height: 2px;
+      border-radius: 1px;
+    }
+    .legend-line.solid   { background: var(--accent); }
+    .legend-line.dashed  { background: repeating-linear-gradient(90deg, var(--accent2) 0 6px, transparent 6px 10px); }
+    .legend-line.dotted  { background: repeating-linear-gradient(90deg, var(--text-3) 0 3px, transparent 3px 7px); }
+    .legend-line.compose { background: var(--accent3); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 28px;
+      font-size: 12px; color: var(--text-3);
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      header { padding: 32px 20px 28px; }
+      main { padding: 24px 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ HEADER ═══════════════════════════ -->
+<header>
+  <div class="header-badge">⚙ UML Class Diagram</div>
+  <h1>Smart Home Automation Simulator</h1>
+  <p>Complete class architecture across 9 packages — models, services, automation engine, persistence, and Swing UI.</p>
+  <div class="stats-row">
+    <div class="stat-chip"><span class="num">6</span><span class="lbl">Device types</span></div>
+    <div class="stat-chip"><span class="num">5</span><span class="lbl">Sensor types</span></div>
+    <div class="stat-chip"><span class="num">4</span><span class="lbl">Interfaces</span></div>
+    <div class="stat-chip"><span class="num">7</span><span class="lbl">Services</span></div>
+    <div class="stat-chip"><span class="num">5</span><span class="lbl">Design patterns</span></div>
+    <div class="stat-chip"><span class="num">9</span><span class="lbl">Packages</span></div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════ MAIN ═══════════════════════════ -->
+<main>
+
+  <!-- PACKAGE OVERVIEW -->
+  <div class="section-title">Package Overview</div>
+  <div class="pkg-grid">
+
+    <div class="pkg-card" style="--pkg-color:#6ea8e8">
+      <div class="pkg-icon">🔌</div>
+      <h3>smarthome.interfaces</h3>
+      <p>Core contracts defining device capabilities and event listeners.</p>
+      <div class="class-list">
+        <span class="cls-tag iface">Switchable</span>
+        <span class="cls-tag iface">Controllable</span>
+        <span class="cls-tag iface">Alertable</span>
+        <span class="cls-tag iface">SensorListener</span>
+      </div>
+    </div>
+
+    <div class="pkg-card" style="--pkg-color:#3dd6c0">
+      <div class="pkg-icon">🏠</div>
+      <h3>smarthome.model</h3>
+      <p>All domain entities. <code>Home</code> is the aggregate root composing every collection.</p>
+      <div class="class-list">
+        <span class="cls-tag">Home</span>
+        <span class="cls-tag">Room</span>
+        <span class="cls-tag abstract">Device</span>
+        <span class="cls-tag abstract">Sensor</span>
+        <span class="cls-tag">Alert</span>
+        <span class="cls-tag">Schedule</span>
+        <span class="cls-tag">SystemLog</span>
+        <span class="cls-tag">AutomationRule</span>
+      </div>
+    </div>
+
+    <div class="pkg-card" style="--pkg-color:#e8ae3d">
+      <div class="pkg-icon">💡</div>
+      <h3>smarthome.model — Devices</h3>
+      <p>Six concrete smart device types, all extending the abstract <code>Device</code>.</p>
+      <div class="class-list">
+        <span class="cls-tag">Light</span>
+        <span class="cls-tag">Fan</span>
+        <span class="cls-tag">AirConditioner</span>
+        <span class="cls-tag">SmartTV</span>
+        <span class="cls-tag">SmartLock</span>
+        <span class="cls-tag">SecurityCamera</span>
+      </div>
+    </div>
+
+    <div class="pkg-card" style="--pkg-color:#a78bfa">
+      <div class="pkg-icon">📡</div>
+      <h3>smarthome.model — Sensors</h3>
+      <p>Five concrete sensor types, all extending the abstract <code>Sensor</code>.</p>
+      <div class="class-list">
+        <span class="cls-tag">TemperatureSensor</span>
+        <span class="cls-tag">MotionSensor</span>
+        <span class="cls-tag">DoorSensor</span>
+        <span class="cls-tag">SmokeSensor</span>
+        <span class="cls-tag">LightSensor</span>
+      </div>
+    </div>
+
+    <div class="pkg-card" style="--pkg-color:#4cc97a">
+      <div class="pkg-icon">⚡</div>
+      <h3>smarthome.automation</h3>
+      <p>Strategy + Observer patterns. Engine evaluates IF→THEN rules on every sensor event.</p>
+      <div class="class-list">
+        <span class="cls-tag abstract">Condition</span>
+        <span class="cls-tag abstract">Action</span>
+        <span class="cls-tag">AutomationEngine</span>
+        <span class="cls-tag">TurnOnDeviceAction</span>
+        <span class="cls-tag">TurnOffDeviceAction</span>
+        <span class="cls-tag">RaiseAlertAction</span>
+      </div>
+    </div>
+
+    <div class="pkg-card" style="--pkg-color:#3dd6c0">
+      <div class="pkg-icon">🧩</div>
+      <h3>smarthome.service</h3>
+      <p>Business logic layer. Each service operates on the shared <code>Home</code> object.</p>
+      <div class="class-list">
+        <span class="cls-tag">HomeService</span>
+        <span class="cls-tag">DeviceService</span>
+        <span class="cls-tag">SensorService</span>
+        <span class="cls-tag">AutomationService</span>
+        <span class="cls-tag">ScheduleService</span>
+        <span class="cls-tag">AlertService</span>
+        <span class="cls-tag">SecurityService</span>
+      </div>
+    </div>
+
+    <div class="pkg-card" style="--pkg-color:#6ea8e8">
+      <div class="pkg-icon">💾</div>
+      <h3>smarthome.persistence</h3>
+      <p>Java object serialisation — saves/loads the entire <code>Home</code> graph to <code>data/home.dat</code>.</p>
+      <div class="class-list">
+        <span class="cls-tag">FileManager</span>
+      </div>
+    </div>
+
+    <div class="pkg-card" style="--pkg-color:#e86a6a">
+      <div class="pkg-icon">⚠</div>
+      <h3>smarthome.exception</h3>
+      <p>Custom runtime exceptions for domain-specific error cases.</p>
+      <div class="class-list">
+        <span class="cls-tag">DeviceNotFoundException</span>
+        <span class="cls-tag">RoomNotFoundException</span>
+        <span class="cls-tag">InvalidDeviceStateException</span>
+        <span class="cls-tag">InvalidScheduleException</span>
+      </div>
+    </div>
+
+    <div class="pkg-card" style="--pkg-color:#a78bfa">
+      <div class="pkg-icon">🖥</div>
+      <h3>smarthome.ui</h3>
+      <p>Swing GUI — dark-themed panels, reusable components, centralised theme constants.</p>
+      <div class="class-list">
+        <span class="cls-tag">MainFrame</span>
+        <span class="cls-tag">DashboardPanel</span>
+        <span class="cls-tag">DevicePanel</span>
+        <span class="cls-tag">SensorPanel</span>
+        <span class="cls-tag">RoomPanel</span>
+        <span class="cls-tag">AutomationPanel</span>
+        <span class="cls-tag">SchedulePanel</span>
+        <span class="cls-tag">SecurityPanel</span>
+        <span class="cls-tag">AlertPanel</span>
+        <span class="cls-tag">LogPanel</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DIAGRAM -->
+  <div class="section-title">Full Class Diagram</div>
+  <div class="diagram-panel">
+    <div class="diagram-toolbar">
+      <div style="display:flex;align-items:center;gap:16px">
+        <div class="toolbar-dots">
+          <div class="dot r"></div>
+          <div class="dot y"></div>
+          <div class="dot g"></div>
+        </div>
+        <span class="toolbar-title">📐 UML — smarthome.*</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="zoom-btn" onclick="zoom(-0.15)">− Zoom Out</button>
+        <button class="zoom-btn" onclick="zoom(0.15)">+ Zoom In</button>
+        <button class="zoom-btn" onclick="resetZoom()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="diagram-body">
+      <div id="mermaid-wrap">
+        <div class="mermaid">
+classDiagram
+    direction TB
+
+    %% ── INTERFACES ──
+    class Switchable {
+        &lt;&lt;interface&gt;&gt;
+        +turnOn() void
+        +turnOff() void
+        +isOn() boolean
+    }
+    class Controllable {
+        &lt;&lt;interface&gt;&gt;
+        +getStatusSummary() String
+        +getCurrentPowerConsumption() double
+    }
+    class Alertable {
+        &lt;&lt;interface&gt;&gt;
+        +raiseAlert(alert Alert) void
+    }
+    class SensorListener {
+        &lt;&lt;interface&gt;&gt;
+        +onSensorEvent(sensor Sensor) void
+    }
+
+    %% ── ABSTRACT DEVICE ──
+    class Device {
+        &lt;&lt;abstract&gt;&gt;
+        -deviceId String
+        -deviceName String
+        -roomId String
+        -isOn boolean
+        -createdTime LocalDateTime
+        +turnOn() void
+        +turnOff() void
+        +isOn() boolean
+        +getDeviceId() String
+        +getDeviceName() String
+        +getRoomId() String
+        +getDeviceType()* String
+        +getCurrentPowerConsumption()* double
+        +getStatusSummary()* String
+    }
+    Device ..|> Switchable
+    Device ..|> Controllable
+
+    class Light {
+        -brightness int
+        +getDeviceType() String
+        +getCurrentPowerConsumption() double
+        +getStatusSummary() String
+        +getBrightness() int
+        +setBrightness(v int) void
+    }
+    class Fan {
+        -speed int
+        +getDeviceType() String
+        +getCurrentPowerConsumption() double
+        +getStatusSummary() String
+        +getSpeed() int
+        +setSpeed(v int) void
+    }
+    class AirConditioner {
+        -targetTemperature double
+        -mode String
+        +getDeviceType() String
+        +getCurrentPowerConsumption() double
+        +getStatusSummary() String
+        +getTargetTemperature() double
+        +setTargetTemperature(t double) void
+        +getMode() String
+        +setMode(m String) void
+    }
+    class SmartTV {
+        -channel int
+        -volume int
+        +getDeviceType() String
+        +getCurrentPowerConsumption() double
+        +getStatusSummary() String
+    }
+    class SmartLock {
+        -locked boolean
+        +getDeviceType() String
+        +getCurrentPowerConsumption() double
+        +getStatusSummary() String
+        +isLocked() boolean
+        +lock() void
+        +unlock() void
+    }
+    class SecurityCamera {
+        -monitoring boolean
+        +getDeviceType() String
+        +getCurrentPowerConsumption() double
+        +getStatusSummary() String
+        +isMonitoring() boolean
+        +turnOn() void
+        +turnOff() void
+    }
+    Device <|-- Light
+    Device <|-- Fan
+    Device <|-- AirConditioner
+    Device <|-- SmartTV
+    Device <|-- SmartLock
+    Device <|-- SecurityCamera
+
+    %% ── ABSTRACT SENSOR ──
+    class Sensor {
+        &lt;&lt;abstract&gt;&gt;
+        -sensorId String
+        -sensorName String
+        -roomId String
+        -active boolean
+        +getSensorId() String
+        +getSensorName() String
+        +isActive() boolean
+        +setActive(v boolean) void
+        +getSensorType()* String
+        +getFormattedValue()* String
+    }
+    class TemperatureSensor {
+        -temperature double
+        +getSensorType() String
+        +getFormattedValue() String
+        +getTemperature() double
+        +setTemperature(t double) void
+    }
+    class MotionSensor {
+        -motionDetected boolean
+        +getSensorType() String
+        +getFormattedValue() String
+        +isMotionDetected() boolean
+        +setMotionDetected(v boolean) void
+    }
+    class DoorSensor {
+        -open boolean
+        +getSensorType() String
+        +getFormattedValue() String
+        +isOpen() boolean
+        +setOpen(v boolean) void
+    }
+    class SmokeSensor {
+        -smokeDetected boolean
+        +getSensorType() String
+        +getFormattedValue() String
+        +isSmokeDetected() boolean
+    }
+    class LightSensor {
+        -luxLevel double
+        +getSensorType() String
+        +getFormattedValue() String
+        +getLuxLevel() double
+        +setLuxLevel(l double) void
+    }
+    Sensor <|-- TemperatureSensor
+    Sensor <|-- MotionSensor
+    Sensor <|-- DoorSensor
+    Sensor <|-- SmokeSensor
+    Sensor <|-- LightSensor
+
+    %% ── CORE DOMAIN ──
+    class Home {
+        -rooms Map
+        -devices Map
+        -sensors Map
+        -automationRules Map
+        -schedules Map
+        -alerts Map
+        -logs List
+        -securityModeOn boolean
+        +getRooms() Map
+        +getDevices() Map
+        +getSensors() Map
+        +addLog(type EventType, desc String) void
+        +isSecurityModeOn() boolean
+        +setSecurityModeOn(v boolean) void
+    }
+    class Room {
+        -roomId String
+        -roomName String
+        -deviceIds List
+        -sensorIds List
+        +getRoomId() String
+        +getRoomName() String
+        +addDeviceId(id String) void
+        +removeDeviceId(id String) void
+        +addSensorId(id String) void
+        +removeSensorId(id String) void
+    }
+    class Alert {
+        -alertId String
+        -type String
+        -message String
+        -severity Severity
+        -timestamp LocalDateTime
+        -read boolean
+        +getAlertId() String
+        +getSeverity() Severity
+        +isRead() boolean
+        +markAsRead() void
+    }
+    class Schedule {
+        -scheduleId String
+        -scheduleName String
+        -deviceId String
+        -action ScheduleAction
+        -scheduledTime LocalTime
+        -enabled boolean
+        -repeatDaily boolean
+        +getScheduleId() String
+        +getAction() ScheduleAction
+        +isEnabled() boolean
+        +isRepeatDaily() boolean
+    }
+    class SystemLog {
+        -timestamp LocalDateTime
+        -eventType EventType
+        -description String
+        +getFormattedTimestamp() String
+        +getEventType() EventType
+        +getDescription() String
+    }
+    class AutomationRule {
+        -ruleId String
+        -ruleName String
+        -condition Condition
+        -action Action
+        -enabled boolean
+        -creationTime LocalDateTime
+        +getRuleId() String
+        +isEnabled() boolean
+        +getRuleDescription() String
+    }
+
+    Home "1" o-- "many" Room
+    Home "1" *-- "many" Device
+    Home "1" *-- "many" Sensor
+    Home "1" *-- "many" Alert
+    Home "1" *-- "many" Schedule
+    Home "1" *-- "many" SystemLog
+    Home "1" *-- "many" AutomationRule
+
+    %% ── AUTOMATION STRATEGY ──
+    class Condition {
+        &lt;&lt;abstract&gt;&gt;
+        +evaluate(home Home)* boolean
+        +describe()* String
+    }
+    class Action {
+        &lt;&lt;abstract&gt;&gt;
+        +execute(home Home, engine AutomationEngine)* void
+        +describe()* String
+    }
+    class TemperatureAboveCondition {
+        -sensorId String
+        -threshold double
+        +evaluate(home Home) boolean
+        +describe() String
+    }
+    class MotionDetectedCondition {
+        -sensorId String
+        +evaluate(home Home) boolean
+        +describe() String
+    }
+    class DoorOpenedCondition {
+        -sensorId String
+        +evaluate(home Home) boolean
+        +describe() String
+    }
+    class SmokeDetectedCondition {
+        -sensorId String
+        +evaluate(home Home) boolean
+        +describe() String
+    }
+    class LightLevelBelowCondition {
+        -sensorId String
+        -threshold double
+        +evaluate(home Home) boolean
+        +describe() String
+    }
+    class TurnOnDeviceAction {
+        -deviceId String
+        -deviceName String
+        +execute(home Home, engine AutomationEngine) void
+        +describe() String
+    }
+    class TurnOffDeviceAction {
+        -deviceId String
+        -deviceName String
+        +execute(home Home, engine AutomationEngine) void
+        +describe() String
+    }
+    class RaiseAlertAction {
+        -alertType String
+        -message String
+        -severity Severity
+        +execute(home Home, engine AutomationEngine) void
+        +describe() String
+    }
+
+    AutomationRule o-- Condition
+    AutomationRule o-- Action
+    Condition <|-- TemperatureAboveCondition
+    Condition <|-- MotionDetectedCondition
+    Condition <|-- DoorOpenedCondition
+    Condition <|-- SmokeDetectedCondition
+    Condition <|-- LightLevelBelowCondition
+    Action <|-- TurnOnDeviceAction
+    Action <|-- TurnOffDeviceAction
+    Action <|-- RaiseAlertAction
+
+    %% ── AUTOMATION ENGINE ──
+    class AutomationEngine {
+        -home Home
+        -alertCallbacks List
+        -logCallbacks List
+        +onSensorEvent(sensor Sensor) void
+        +evaluateAllRules() void
+        +raiseAlert(alert Alert) void
+        +logAutomationEvent(desc String) void
+        +addAlertCallback(cb Consumer) void
+        +addLogCallback(cb Consumer) void
+    }
+    AutomationEngine ..|> SensorListener
+    AutomationEngine ..|> Alertable
+    AutomationEngine --> Home
+
+    %% ── SERVICES ──
+    class HomeService {
+        -home Home
+        -fileManager FileManager
+        +getHome() Home
+        +seedInitialData() void
+        +save() void
+        +load() void
+    }
+    class DeviceService {
+        -home Home
+        +addDevice(device Device) void
+        +removeDevice(id String) void
+        +toggleDevice(id String) void
+        +getDevicesInRoom(roomId String) List
+        +updateDevice(device Device) void
+    }
+    class SensorService {
+        -home Home
+        -listeners List
+        +addSensor(sensor Sensor) void
+        +removeSensor(id String) void
+        +updateSensorValue(sensor Sensor) void
+        +addListener(l SensorListener) void
+        +notifyListeners(sensor Sensor) void
+        +startSimulation() void
+        +stopSimulation() void
+    }
+    class AutomationService {
+        -home Home
+        -engine AutomationEngine
+        +addRule(rule AutomationRule) void
+        +removeRule(id String) void
+        +toggleRule(id String) void
+        +triggerManually() void
+    }
+    class ScheduleService {
+        -home Home
+        +addSchedule(schedule Schedule) void
+        +removeSchedule(id String) void
+        +toggleSchedule(id String) void
+        +startScheduler() void
+        +stopScheduler() void
+    }
+    class AlertService {
+        -home Home
+        +addAlert(alert Alert) void
+        +markAllRead() void
+        +getUnreadCount() int
+        +clearAll() void
+    }
+    class SecurityService {
+        -home Home
+        +isArmed() boolean
+        +arm() void
+        +disarm() void
+    }
+    class FileManager {
+        -dataFilePath String
+        +save(home Home) void
+        +load() Home
+    }
+
+    HomeService --> Home
+    HomeService --> FileManager
+    DeviceService --> Home
+    SensorService --> Home
+    SensorService --> SensorListener
+    AutomationService --> Home
+    AutomationService --> AutomationEngine
+    ScheduleService --> Home
+    AlertService --> Home
+    SecurityService --> Home
+
+    %% ── EXCEPTIONS ──
+    class DeviceNotFoundException {
+        +DeviceNotFoundException(id String)
+    }
+    class RoomNotFoundException {
+        +RoomNotFoundException(id String)
+    }
+    class InvalidDeviceStateException {
+        +InvalidDeviceStateException(msg String)
+    }
+    class InvalidScheduleException {
+        +InvalidScheduleException(msg String)
+    }
+    DeviceNotFoundException --|> RuntimeException
+    RoomNotFoundException --|> RuntimeException
+    InvalidDeviceStateException --|> RuntimeException
+    InvalidScheduleException --|> RuntimeException
+
+    %% ── ENTRY POINT ──
+    class Main {
+        +main(args String[]) void
+    }
+    class MainFrame {
+        -homeService HomeService
+        -deviceService DeviceService
+        -sensorService SensorService
+        -automationService AutomationService
+        -scheduleService ScheduleService
+        -alertService AlertService
+        -securityService SecurityService
+        +show() void
+    }
+    Main --> MainFrame
+    MainFrame --> HomeService
+    MainFrame --> DeviceService
+    MainFrame --> SensorService
+    MainFrame --> AutomationService
+    MainFrame --> ScheduleService
+    MainFrame --> AlertService
+    MainFrame --> SecurityService
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-line solid"></div>
+      <span><strong>--|&gt;</strong> Inheritance (extends)</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-line dashed"></div>
+      <span><strong>..|&gt;</strong> Realisation (implements)</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-line compose"></div>
+      <span><strong>*--</strong> Composition (strong ownership)</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-line dotted"></div>
+      <span><strong>o--</strong> Aggregation (shared reference)</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-line" style="background:var(--text-3)"></div>
+      <span><strong>--&gt;</strong> Dependency / uses</span>
+    </div>
+    <div class="legend-item">
+      <div style="width:36px;height:2px;border-top:2px dashed var(--text-3)"></div>
+      <span><strong>--</strong> Association</span>
+    </div>
+  </div>
+
+  <!-- DESIGN PATTERNS TABLE -->
+  <div class="section-title">Design Patterns</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Pattern</th>
+          <th>Where Applied</th>
+          <th>Classes Involved</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="pattern-badge p-inherit">Inheritance</span></td>
+          <td>All device and sensor variants share a common base class with template methods.</td>
+          <td><code>Device</code> → <code>Light</code>, <code>Fan</code>, <code>AirConditioner</code>, <code>SmartTV</code>, <code>SmartLock</code>, <code>SecurityCamera</code><br><code>Sensor</code> → 5 concrete sensor types</td>
+        </tr>
+        <tr>
+          <td><span class="pattern-badge p-strategy">Strategy</span></td>
+          <td>Conditions and Actions are pluggable strategies held by <code>AutomationRule</code>. New IF/THEN logic can be added without changing the rule or engine.</td>
+          <td><code>Condition</code> (abstract) + 5 concrete conditions<br><code>Action</code> (abstract) + 3 concrete actions<br><code>AutomationRule</code> (context)</td>
+        </tr>
+        <tr>
+          <td><span class="pattern-badge p-observer">Observer</span></td>
+          <td><code>SensorService</code> is the publisher; registered <code>SensorListener</code> objects are notified on every sensor state change. <code>AutomationEngine</code> subscribes as an observer to trigger rule evaluation.</td>
+          <td><code>SensorListener</code> (interface)<br><code>SensorService</code> (publisher)<br><code>AutomationEngine</code> (subscriber)</td>
+        </tr>
+        <tr>
+          <td><span class="pattern-badge p-composite">Composition</span></td>
+          <td><code>Home</code> is the aggregate root. All collections (rooms, devices, sensors, rules, schedules, alerts, logs) are owned by <code>Home</code> and serialised together as one object graph.</td>
+          <td><code>Home</code> *── <code>Room</code>, <code>Device</code>, <code>Sensor</code>, <code>Alert</code>, <code>Schedule</code>, <code>SystemLog</code>, <code>AutomationRule</code></td>
+        </tr>
+        <tr>
+          <td><span class="pattern-badge p-template">Template Method</span></td>
+          <td>Abstract base classes define the skeleton algorithm (e.g. <code>toString()</code> calls abstract hooks), while subclasses fill in the specific steps like <code>getDeviceType()</code> and <code>getStatusSummary()</code>.</td>
+          <td><code>Device</code>, <code>Sensor</code> (template)<br>All concrete device / sensor subclasses (concrete steps)</td>
+        </tr>
+        <tr>
+          <td><span class="pattern-badge p-singleton">Utility / Singleton-like</span></td>
+          <td><code>Theme</code> is a final class with only static constants — a non-instantiable utility providing all color and font tokens to the UI.</td>
+          <td><code>Theme</code> (smarthome.ui.theme)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<footer>
+  Generated for <strong>Smart Home Automation Simulator</strong> &mdash; Java 17+ / OpenJDK 21 &mdash; Standard Library Only
+</footer>
+
+<script>
+  // ── Mermaid init ──
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      background:        '#0d1117',
+      primaryColor:      '#1c2230',
+      primaryBorderColor:'#3dd6c0',
+      primaryTextColor:  '#e8ecf1',
+      lineColor:         '#3dd6c0',
+      secondaryColor:    '#21293a',
+      tertiaryColor:     '#161b22',
+      edgeLabelBackground:'#161b22',
+      classText:         '#e8ecf1',
+      titleColor:        '#3dd6c0',
+      nodeBorder:        '#2d3748',
+      clusterBkg:        '#161b22',
+      fontFamily:        'Inter, sans-serif',
+      fontSize:          '13px'
+    },
+    classDiagram: { useMaxWidth: false }
+  });
+
+  // ── Zoom controls ──
+  let scale = 1;
+  const wrap = document.getElementById('mermaid-wrap');
+
+  function zoom(delta) {
+    scale = Math.min(Math.max(scale + delta, 0.3), 3);
+    wrap.style.transform = `scale(${scale})`;
+  }
+  function resetZoom() {
+    scale = 1;
+    wrap.style.transform = 'scale(1)';
+  }
+
+  // ── Fade-in on load ──
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.pkg-card').forEach((card, i) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(18px)';
+      setTimeout(() => {
+        card.style.transition = 'opacity .4s ease, transform .4s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 80 + i * 60);
+    });
+  });
+</script>
+</body>
+</html>
