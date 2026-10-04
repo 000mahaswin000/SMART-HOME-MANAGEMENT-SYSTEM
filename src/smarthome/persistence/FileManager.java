@@ -2,19 +2,19 @@ package smarthome.persistence;
 
 import smarthome.model.Home;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 /**
- * Handles saving and loading the entire Home object graph using
- * Java's built-in Serializable mechanism - a standard-library-only
- * persistence approach with no external dependencies.
- *
- * Data is stored at data/home.dat relative to the working directory.
- * Missing or corrupt files are handled safely: loadHome() returns
- * null in that case, and the caller (Main) is responsible for
- * creating fresh sample data.
+ * Saves and loads the complete Home object graph using Java serialization.
+ * Data is stored in data/home.dat relative to the working directory.
  */
 public class FileManager {
 
@@ -27,51 +27,47 @@ public class FileManager {
         this.dataFilePath = Path.of(DATA_DIRECTORY, DATA_FILE_NAME);
     }
 
-    /**
-     * Save the given Home object graph to disk.
-     *
-     * @param home the application state to persist
-     * @throws IOException if the file cannot be written
-     */
+    /** Saves the complete Home object graph to data/home.dat. */
     public void saveHome(Home home) throws IOException {
         Path parentDir = dataFilePath.getParent();
         if (parentDir != null && !Files.exists(parentDir)) {
             Files.createDirectories(parentDir);
         }
-        try (ObjectOutputStream oos = new ObjectOutputStream(
-                new BufferedOutputStream(Files.newOutputStream(dataFilePath)))) {
-            oos.writeObject(home);
+
+        Path temporaryFile = dataFilePath.resolveSibling(DATA_FILE_NAME + ".tmp");
+        try (ObjectOutputStream output = new ObjectOutputStream(
+                new BufferedOutputStream(Files.newOutputStream(temporaryFile)))) {
+            output.writeObject(home);
+        }
+
+        try {
+            Files.move(temporaryFile, dataFilePath,
+                    StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+        } catch (AtomicMoveNotSupportedException ex) {
+            Files.move(temporaryFile, dataFilePath, StandardCopyOption.REPLACE_EXISTING);
         }
     }
 
     /**
-     * Load a previously saved Home object graph from disk.
+     * Loads the saved Home object graph from data/home.dat.
      *
      * @return the loaded Home, or null if no valid save file exists
-     *         (missing file, corrupt file, or version mismatch are
-     *         all handled safely by returning null rather than
-     *         throwing, so the caller can fall back to sample data).
      */
     public Home loadHome() {
-        if (!Files.exists(dataFilePath)) {
-            return null;
-        }
-        try (ObjectInputStream ois = new ObjectInputStream(
+        if (!Files.exists(dataFilePath)) return null;
+
+        try (ObjectInputStream input = new ObjectInputStream(
                 new BufferedInputStream(Files.newInputStream(dataFilePath)))) {
-            Object obj = ois.readObject();
-            if (obj instanceof Home home) {
-                return home;
-            }
-            return null;
-        } catch (IOException | ClassNotFoundException | ClassCastException e) {
-            // Corrupt or incompatible save file - fail safe, let caller create fresh data.
-            System.err.println("Warning: could not load saved data (" + e.getMessage()
+            Object object = input.readObject();
+            return object instanceof Home home ? home : null;
+        } catch (IOException | ClassNotFoundException | ClassCastException ex) {
+            System.err.println("Warning: could not load saved data (" + ex.getMessage()
                     + "). Starting with fresh sample data.");
             return null;
         }
     }
 
-    /** @return true if a save file currently exists on disk. */
+    /** @return true when data/home.dat exists. */
     public boolean saveFileExists() {
         return Files.exists(dataFilePath);
     }

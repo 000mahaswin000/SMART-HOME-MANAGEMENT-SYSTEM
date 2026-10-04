@@ -1,0 +1,111 @@
+{
+"formatVersion": 1,
+"securityModeOn": true,
+  "rooms": [
+
+    {"id": "ROOM-1","name": "Living Room","deviceIds": ["DEV-1","DEV-2","DEV-3","DEV-4"],"sensorIds": ["SEN-1"]},
+    {"id": "ROOM-2","name": "Bedroom","deviceIds": ["DEV-5","DEV-6"],"sensorIds": ["SEN-2"]},
+    {"id": "ROOM-3","name": "Kitchen","deviceIds": ["DEV-7"],"sensorIds": ["SEN-3"]},
+    {"id": "ROOM-4","name": "Study Room","deviceIds": ["DEV-8"],"sensorIds": ["SEN-4"]},
+    {"id": "ROOM-5","name": "Bathroom","deviceIds": ["DEV-9"],"sensorIds": []},
+    {"id": "ROOM-6","name": "Front Door","deviceIds": ["DEV-10"],"sensorIds": ["SEN-5"]}
+  ],
+  "devices": [
+
+    {"type": "Light","id": "DEV-1","name": "Main Light","roomId": "ROOM-1","isOn": false,"createdTime": "2026-09-23T09:20:08.700291800","brightness": 100},
+    {"type": "Fan","id": "DEV-2","name": "Ceiling Fan","roomId": "ROOM-1","isOn": false,"createdTime": "2026-09-23T09:20:08.700291800","speedLevel": 3},
+    {"type": "AirConditioner","id": "DEV-3","name": "Living Room AC","roomId": "ROOM-1","isOn": true,"createdTime": "2026-09-23T09:20:08.700291800","temperature": 24,"mode": "COOL"},
+    {"type": "SecurityCamera","id": "DEV-4","name": "Living Room Camera","roomId": "ROOM-1","isOn": false,"createdTime": "2026-09-23T09:20:08.702296300","monitoring": false,"motionDetected": false},
+    {"type": "Light","id": "DEV-5","name": "Bedroom Light","roomId": "ROOM-2","isOn": false,"createdTime": "2026-09-23T09:20:08.702296300","brightness": 100},
+    {"type": "Fan","id": "DEV-6","name": "Bedroom Fan","roomId": "ROOM-2","isOn": false,"createdTime": "2026-09-23T09:20:08.702296300","speedLevel": 3},
+    {"type": "Light","id": "DEV-7","name": "Kitchen Light","roomId": "ROOM-3","isOn": false,"createdTime": "2026-09-23T09:20:08.702296300","brightness": 100},
+    {"type": "Light","id": "DEV-8","name": "Study Light","roomId": "ROOM-4","isOn": false,"createdTime": "2026-09-23T09:20:08.702296300","brightness": 100},
+    {"type": "Light","id": "DEV-9","name": "Bathroom Light","roomId": "ROOM-5","isOn": false,"createdTime": "2026-09-23T09:20:08.702296300","brightness": 100},
+    {"type": "SmartLock","id": "DEV-10","name": "Front Door Lock","roomId": "ROOM-6","isOn": true,"createdTime": "2026-09-23T09:20:08.702296300","locked": true}
+  ],
+  "sensors": [
+
+    {"type": "Motion","id": "SEN-1","name": "Living Room Motion Sensor","roomId": "ROOM-1","active": true,"motionDetected": false},
+    {"type": "Temperature","id": "SEN-2","name": "Bedroom Temperature Sensor","roomId": "ROOM-2","active": true,"temperatureCelsius": 30.0},
+    {"type": "Smoke","id": "SEN-3","name": "Kitchen Smoke Sensor","roomId": "ROOM-3","active": true,"smokeDetected": false},
+    {"type": "Light","id": "SEN-4","name": "Study Light Sensor","roomId": "ROOM-4","active": true,"lightLevel": 50},
+    {"type": "Door","id": "SEN-5","name": "Front Door Sensor","roomId": "ROOM-6","active": true,"open": false}
+  ],
+  "automationRules": [
+
+    {"id": "RULE-1","name": "AC Auto-Cool","enabled": true,"creationTime": "2026-09-23T09:20:08.722833600","condition": {"type": "TemperatureAbove","thresholdCelsius": 30.0},"action": {"type": "TurnOnDevice","targetDeviceId": "DEV-3","targetDeviceName": "Living Room AC"}},
+    {"id": "RULE-2","name": "Motion Security Alert","enabled": true,"creationTime": "2026-09-23T09:20:08.723822700","condition": {"type": "MotionDetected","requireSecurityMode": true},"action": {"type": "RaiseAlert","alertType": "Security","alertMessage": "Motion detected while security mode is ON","severity": "HIGH"}},
+    {"id": "RULE-3","name": "Smoke Critical Alert","enabled": true,"creationTime": "2026-09-23T09:20:08.723822700","condition": {"type": "SmokeDetected"},"action": {"type": "RaiseAlert","alertType": "Fire Safety","alertMessage": "Smoke detected in the home","severity": "CRITICAL"}},
+    {"id": "RULE-4","name": "Door Security Alert","enabled": true,"creationTime": "2026-09-23T09:20:08.723822700","condition": {"type": "DoorOpened","requireSecurityMode": true},"action": {"type": "RaiseAlert","alertType": "Security","alertMessage": "Door opened while security mode is ON","severity": "HIGH"}},
+    {"id": "RULE-5","name": "Auto Light on Low Light","enabled": true,"creationTime": "2026-09-23T09:20:08.723822700","condition": {"type": "LightLevelBelow","threshold": 30},"action": {"type": "TurnOnDevice","targetDeviceId": "DEV-8","targetDeviceName": "Study Light"}}
+  ],
+  "schedules": [
+
+    {"id": "SCH-1","name": "Evening Lights On","deviceId": "DEV-1","deviceName": "Main Light","action": "TURN_ON","scheduledTime": "19:00","enabled": true,"repeatDaily": true,"lastFiredDate": ""},
+    {"id": "SCH-2","name": "Night Lights Off","deviceId": "DEV-1","deviceName": "Main Light","action": "TURN_OFF","scheduledTime": "22:30","enabled": true,"repeatDaily": true,"lastFiredDate": ""},
+    {"id": "SCH-3","name": "Morning Fan On","deviceId": "DEV-6","deviceName": "Bedroom Fan","action": "TURN_ON","scheduledTime": "06:00","enabled": true,"repeatDaily": true,"lastFiredDate": ""}
+  ],
+  "alerts": [
+
+    {"id": "ALT-1","type": "Fire Safety","message": "Smoke detected in the home","severity": "CRITICAL","timestamp": "2026-09-23T09:38:42.509255","read": true},
+    {"id": "ALT-2","type": "Fire Safety","message": "Smoke detected in the home","severity": "CRITICAL","timestamp": "2026-09-24T13:21:08.075724800","read": true},
+    {"id": "ALT-3","type": "Fire Safety","message": "Smoke detected in the home","severity": "CRITICAL","timestamp": "2026-09-24T13:22:02.605327900","read": true},
+    {"id": "ALT-4","type": "Security","message": "Door opened while security mode is ON","severity": "HIGH","timestamp": "2026-09-24T13:22:02.653486400","read": true},
+    {"id": "ALT-5","type": "Security","message": "Door opened while security mode is ON","severity": "HIGH","timestamp": "2026-09-24T13:22:26.665151900","read": true},
+    {"id": "ALT-6","type": "Security","message": "Door opened while security mode is ON","severity": "HIGH","timestamp": "2026-09-24T13:22:38.480615300","read": true}
+  ],
+  "logs": [
+
+    {"timestamp": "2026-09-23T09:20:08.696257800","eventType": "SYSTEM","description": "Room added: Living Room"},
+    {"timestamp": "2026-09-23T09:20:08.696257800","eventType": "SYSTEM","description": "Room added: Bedroom"},
+    {"timestamp": "2026-09-23T09:20:08.696257800","eventType": "SYSTEM","description": "Room added: Kitchen"},
+    {"timestamp": "2026-09-23T09:20:08.696257800","eventType": "SYSTEM","description": "Room added: Study Room"},
+    {"timestamp": "2026-09-23T09:20:08.696257800","eventType": "SYSTEM","description": "Room added: Bathroom"},
+    {"timestamp": "2026-09-23T09:20:08.696257800","eventType": "SYSTEM","description": "Room added: Front Door"},
+    {"timestamp": "2026-09-23T09:20:08.700291800","eventType": "DEVICE","description": "Main Light added to Living Room"},
+    {"timestamp": "2026-09-23T09:20:08.700291800","eventType": "DEVICE","description": "Ceiling Fan added to Living Room"},
+    {"timestamp": "2026-09-23T09:20:08.702296300","eventType": "DEVICE","description": "Living Room AC added to Living Room"},
+    {"timestamp": "2026-09-23T09:20:08.702296300","eventType": "DEVICE","description": "Living Room Camera added to Living Room"},
+    {"timestamp": "2026-09-23T09:20:08.702296300","eventType": "DEVICE","description": "Bedroom Light added to Bedroom"},
+    {"timestamp": "2026-09-23T09:20:08.702296300","eventType": "DEVICE","description": "Bedroom Fan added to Bedroom"},
+    {"timestamp": "2026-09-23T09:20:08.702296300","eventType": "DEVICE","description": "Kitchen Light added to Kitchen"},
+    {"timestamp": "2026-09-23T09:20:08.702296300","eventType": "DEVICE","description": "Study Light added to Study Room"},
+    {"timestamp": "2026-09-23T09:20:08.702296300","eventType": "DEVICE","description": "Bathroom Light added to Bathroom"},
+    {"timestamp": "2026-09-23T09:20:08.702296300","eventType": "DEVICE","description": "Front Door Lock added to Front Door"},
+    {"timestamp": "2026-09-23T09:20:08.727865","eventType": "SCHEDULE","description": "Schedule created: 19:00 -> TURN_ON Main Light (daily)"},
+    {"timestamp": "2026-09-23T09:20:08.727865","eventType": "SCHEDULE","description": "Schedule created: 22:30 -> TURN_OFF Main Light (daily)"},
+    {"timestamp": "2026-09-23T09:20:08.727865","eventType": "SCHEDULE","description": "Schedule created: 06:00 -> TURN_ON Bedroom Fan (daily)"},
+    {"timestamp": "2026-09-23T09:38:33.050265300","eventType": "DEVICE","description": "Main Light turned ON"},
+    {"timestamp": "2026-09-23T09:38:36.297357500","eventType": "DEVICE","description": "Main Light turned OFF"},
+    {"timestamp": "2026-09-23T09:38:42.472840","eventType": "SENSOR","description": "Smoke detected in Kitchen"},
+    {"timestamp": "2026-09-23T09:38:42.472840","eventType": "AUTOMATION","description": "\"Smoke Critical Alert\" rule triggered"},
+    {"timestamp": "2026-09-23T09:38:42.527330800","eventType": "AUTOMATION","description": "Alert raised: [CRITICAL] Fire Safety: Smoke detected in the home"},
+    {"timestamp": "2026-09-23T09:39:04.970284800","eventType": "SENSOR","description": "Smoke cleared in Kitchen"},
+    {"timestamp": "2026-09-24T13:19:13.440587500","eventType": "SENSOR","description": "Temperature set to 25.0°C in Bedroom"},
+    {"timestamp": "2026-09-24T13:20:29.488690100","eventType": "SENSOR","description": "Temperature set to 41.0°C in Bedroom"},
+    {"timestamp": "2026-09-24T13:20:29.489688100","eventType": "AUTOMATION","description": "\"AC Auto-Cool\" rule triggered"},
+    {"timestamp": "2026-09-24T13:20:29.515746300","eventType": "AUTOMATION","description": "Automation turned ON: Living Room AC"},
+    {"timestamp": "2026-09-24T13:20:34.469540","eventType": "SENSOR","description": "Temperature set to 41.0°C in Bedroom"},
+    {"timestamp": "2026-09-24T13:20:34.469540","eventType": "AUTOMATION","description": "\"AC Auto-Cool\" rule triggered"},
+    {"timestamp": "2026-09-24T13:20:34.493660400","eventType": "AUTOMATION","description": "Automation turned ON: Living Room AC"},
+    {"timestamp": "2026-09-24T13:20:49.611408100","eventType": "SENSOR","description": "Temperature set to 30.0°C in Bedroom"},
+    {"timestamp": "2026-09-24T13:21:08.050630200","eventType": "SENSOR","description": "Smoke detected in Kitchen"},
+    {"timestamp": "2026-09-24T13:21:08.050630200","eventType": "AUTOMATION","description": "\"Smoke Critical Alert\" rule triggered"},
+    {"timestamp": "2026-09-24T13:21:08.096481900","eventType": "AUTOMATION","description": "Alert raised: [CRITICAL] Fire Safety: Smoke detected in the home"},
+    {"timestamp": "2026-09-24T13:21:50.988013500","eventType": "SECURITY","description": "Security mode turned ON"},
+    {"timestamp": "2026-09-24T13:22:02.587316800","eventType": "SENSOR","description": "Door opened in Front Door"},
+    {"timestamp": "2026-09-24T13:22:02.588643600","eventType": "AUTOMATION","description": "\"Smoke Critical Alert\" rule triggered"},
+    {"timestamp": "2026-09-24T13:22:02.621301300","eventType": "AUTOMATION","description": "Alert raised: [CRITICAL] Fire Safety: Smoke detected in the home"},
+    {"timestamp": "2026-09-24T13:22:02.637915700","eventType": "AUTOMATION","description": "\"Door Security Alert\" rule triggered"},
+    {"timestamp": "2026-09-24T13:22:02.670589300","eventType": "AUTOMATION","description": "Alert raised: [HIGH] Security: Door opened while security mode is ON"},
+    {"timestamp": "2026-09-24T13:22:26.645964300","eventType": "SENSOR","description": "Smoke cleared in Kitchen"},
+    {"timestamp": "2026-09-24T13:22:26.645964300","eventType": "AUTOMATION","description": "\"Door Security Alert\" rule triggered"},
+    {"timestamp": "2026-09-24T13:22:26.682265800","eventType": "AUTOMATION","description": "Alert raised: [HIGH] Security: Door opened while security mode is ON"},
+    {"timestamp": "2026-09-24T13:22:35.952846500","eventType": "SENSOR","description": "Door closed in Front Door"},
+    {"timestamp": "2026-09-24T13:22:37.460730400","eventType": "SENSOR","description": "Door closed in Front Door"},
+    {"timestamp": "2026-09-24T13:22:38.466505","eventType": "SENSOR","description": "Door opened in Front Door"},
+    {"timestamp": "2026-09-24T13:22:38.467521500","eventType": "AUTOMATION","description": "\"Door Security Alert\" rule triggered"},
+    {"timestamp": "2026-09-24T13:22:38.495179200","eventType": "AUTOMATION","description": "Alert raised: [HIGH] Security: Door opened while security mode is ON"},
+    {"timestamp": "2026-09-24T13:22:40.624905500","eventType": "SENSOR","description": "Door closed in Front Door"}
+  ]
+}

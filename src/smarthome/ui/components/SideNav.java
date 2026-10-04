@@ -46,6 +46,10 @@ public class SideNav extends JPanel {
         this.onSelect = onSelect;
     }
 
+    public int getSelectedIndex() {
+        return selectedIndex;
+    }
+
     public void setBadge(int index, int count) {
         if (index >= 0 && index < entries.size()) {
             entries.get(index).setBadge(count);

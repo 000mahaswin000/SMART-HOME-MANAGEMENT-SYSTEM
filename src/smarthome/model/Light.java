@@ -2,6 +2,7 @@ package smarthome.model;
 
 import smarthome.exception.InvalidDeviceStateException;
 
+
 /**
  * Concrete device: Light.
  * Demonstrates INHERITANCE (extends Device) and METHOD OVERRIDING.

@@ -18,6 +18,10 @@ public class TemperatureAboveCondition extends Condition {
         this.thresholdCelsius = thresholdCelsius;
     }
 
+    public double getThresholdCelsius() {
+        return thresholdCelsius;
+    }
+
     @Override
     public boolean evaluate(Home home) {
         for (Sensor sensor : home.getSensors().values()) {

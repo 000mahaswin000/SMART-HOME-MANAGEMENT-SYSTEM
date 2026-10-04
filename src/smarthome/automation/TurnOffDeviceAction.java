@@ -18,6 +18,14 @@ public class TurnOffDeviceAction extends Action {
         this.targetDeviceName = targetDeviceName;
     }
 
+    public String getTargetDeviceId() {
+        return targetDeviceId;
+    }
+
+    public String getTargetDeviceName() {
+        return targetDeviceName;
+    }
+
     @Override
     public void execute(Home home, AutomationEngine automationEngine) {
         Device device = home.getDevices().get(targetDeviceId);

@@ -18,6 +18,10 @@ public class LightLevelBelowCondition extends Condition {
         this.threshold = threshold;
     }
 
+    public int getThreshold() {
+        return threshold;
+    }
+
     @Override
     public boolean evaluate(Home home) {
         for (Sensor sensor : home.getSensors().values()) {

@@ -2,6 +2,7 @@ package smarthome.model;
 
 import smarthome.exception.InvalidDeviceStateException;
 
+
 /**
  * Concrete device: SmartTV. Volume 0-100, channel 1-999.
  */

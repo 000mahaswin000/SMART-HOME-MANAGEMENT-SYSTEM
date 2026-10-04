@@ -11,7 +11,7 @@ import java.awt.*;
 /**
  * Central design system for the whole application: colour palette,
  * fonts, spacing constants, and an installer that pushes a cohesive
- * dark theme into every stock Swing component via UIManager defaults
+ * theme into every stock Swing component via UIManager defaults
  * (tables, buttons, combo boxes, tabs, scroll bars, menus, dialogs).
  *
  * Deliberately implemented with standard Swing APIs only - no
@@ -27,40 +27,38 @@ public final class Theme {
     }
 
     // ---------- Palette ----------
-    // A calm, low-glare dark theme: deep slate backgrounds, soft
-    // off-white text (never pure white, to reduce eye strain), and
-    // one confident accent colour (teal) used sparingly for focus,
-    // selection and primary actions.
+    // These values are mutable so the active palette can be applied before
+    // any Swing component is constructed.
 
-    public static final Color BG_DEEPEST = new Color(0x12, 0x16, 0x1C);   // window background
-    public static final Color BG_BASE = new Color(0x17, 0x1C, 0x24);      // panel background
-    public static final Color BG_SURFACE = new Color(0x1E, 0x24, 0x2E);   // card / table / input surface
-    public static final Color BG_SURFACE_ALT = new Color(0x24, 0x2B, 0x37); // hovered / striped surface
-    public static final Color BG_RAISED = new Color(0x2A, 0x32, 0x3F);    // buttons, chips at rest
+    public static Color BG_DEEPEST = new Color(0x12, 0x16, 0x1C);   // window background
+    public static Color BG_BASE = new Color(0x17, 0x1C, 0x24);      // panel background
+    public static Color BG_SURFACE = new Color(0x1E, 0x24, 0x2E);   // card / table / input surface
+    public static Color BG_SURFACE_ALT = new Color(0x24, 0x2B, 0x37); // hovered / striped surface
+    public static Color BG_RAISED = new Color(0x2A, 0x32, 0x3F);    // buttons, chips at rest
 
-    public static final Color BORDER_SUBTLE = new Color(0x2C, 0x34, 0x40);
-    public static final Color BORDER_STRONG = new Color(0x3A, 0x44, 0x52);
+    public static Color BORDER_SUBTLE = new Color(0x2C, 0x34, 0x40);
+    public static Color BORDER_STRONG = new Color(0x3A, 0x44, 0x52);
 
-    public static final Color TEXT_PRIMARY = new Color(0xE8, 0xEC, 0xF1);
-    public static final Color TEXT_SECONDARY = new Color(0x9B, 0xA7, 0xB4);
-    public static final Color TEXT_MUTED = new Color(0x6B, 0x76, 0x84);
-    public static final Color TEXT_ON_ACCENT = new Color(0x08, 0x14, 0x14);
+    public static Color TEXT_PRIMARY = new Color(0xE8, 0xEC, 0xF1);
+    public static Color TEXT_SECONDARY = new Color(0x9B, 0xA7, 0xB4);
+    public static Color TEXT_MUTED = new Color(0x6B, 0x76, 0x84);
+    public static Color TEXT_ON_ACCENT = new Color(0x08, 0x14, 0x14);
 
-    public static final Color ACCENT = new Color(0x3D, 0xD6, 0xC0);       // teal
-    public static final Color ACCENT_HOVER = new Color(0x57, 0xE2, 0xCE);
-    public static final Color ACCENT_PRESSED = new Color(0x2E, 0xB8, 0xA4);
-    public static final Color ACCENT_DIM = new Color(0x3D, 0xD6, 0xC0, 40);
+    public static Color ACCENT = new Color(0x3D, 0xD6, 0xC0);       // teal
+    public static Color ACCENT_HOVER = new Color(0x57, 0xE2, 0xCE);
+    public static Color ACCENT_PRESSED = new Color(0x2E, 0xB8, 0xA4);
+    public static Color ACCENT_DIM = new Color(0x3D, 0xD6, 0xC0, 40);
 
-    public static final Color SUCCESS = new Color(0x4C, 0xC9, 0x7A);
-    public static final Color WARNING = new Color(0xE8, 0xAE, 0x3D);
-    public static final Color DANGER = new Color(0xE8, 0x6A, 0x6A);
-    public static final Color DANGER_HOVER = new Color(0xF0, 0x82, 0x82);
-    public static final Color INFO = new Color(0x6E, 0xA8, 0xE8);
+    public static Color SUCCESS = new Color(0x4C, 0xC9, 0x7A);
+    public static Color WARNING = new Color(0xE8, 0xAE, 0x3D);
+    public static Color DANGER = new Color(0xE8, 0x6A, 0x6A);
+    public static Color DANGER_HOVER = new Color(0xF0, 0x82, 0x82);
+    public static Color INFO = new Color(0x6E, 0xA8, 0xE8);
 
-    public static final Color SUCCESS_DIM = new Color(0x4C, 0xC9, 0x7A, 34);
-    public static final Color WARNING_DIM = new Color(0xE8, 0xAE, 0x3D, 34);
-    public static final Color DANGER_DIM = new Color(0xE8, 0x6A, 0x6A, 34);
-    public static final Color INFO_DIM = new Color(0x6E, 0xA8, 0xE8, 34);
+    public static Color SUCCESS_DIM = new Color(0x4C, 0xC9, 0x7A, 34);
+    public static Color WARNING_DIM = new Color(0xE8, 0xAE, 0x3D, 34);
+    public static Color DANGER_DIM = new Color(0xE8, 0x6A, 0x6A, 34);
+    public static Color INFO_DIM = new Color(0x6E, 0xA8, 0xE8, 34);
 
     // ---------- Fonts ----------
     // Falls back gracefully: we ask for common cross-platform families
@@ -104,7 +102,7 @@ public final class Theme {
      * Pushes theme colours/fonts into UIManager so every stock Swing
      * component created afterwards (JTable, JButton, JScrollPane,
      * JTabbedPane, JOptionPane, JMenu, tooltips, etc.) picks up the
-     * dark theme automatically, without each panel re-styling every
+     * active theme automatically, without each panel re-styling every
      * widget by hand. Call once, before any UI is constructed.
      */
     public static void install() {
@@ -114,6 +112,62 @@ public final class Theme {
             // Metal (cross-platform) is always available; if this somehow
             // fails we simply continue with whatever is already active
             // and still apply as many of the overrides below as possible.
+        }
+
+        applyPalette(false);
+    }
+
+    private static void applyPalette(boolean dark) {
+        if (dark) {
+            BG_DEEPEST = new Color(0x12, 0x16, 0x1C);
+            BG_BASE = new Color(0x17, 0x1C, 0x24);
+            BG_SURFACE = new Color(0x1E, 0x24, 0x2E);
+            BG_SURFACE_ALT = new Color(0x24, 0x2B, 0x37);
+            BG_RAISED = new Color(0x2A, 0x32, 0x3F);
+            BORDER_SUBTLE = new Color(0x2C, 0x34, 0x40);
+            BORDER_STRONG = new Color(0x3A, 0x44, 0x52);
+            TEXT_PRIMARY = new Color(0xE8, 0xEC, 0xF1);
+            TEXT_SECONDARY = new Color(0x9B, 0xA7, 0xB4);
+            TEXT_MUTED = new Color(0x6B, 0x76, 0x84);
+            TEXT_ON_ACCENT = new Color(0x08, 0x14, 0x14);
+            ACCENT = new Color(0x3D, 0xD6, 0xC0);
+            ACCENT_HOVER = new Color(0x57, 0xE2, 0xCE);
+            ACCENT_PRESSED = new Color(0x2E, 0xB8, 0xA4);
+            ACCENT_DIM = new Color(0x3D, 0xD6, 0xC0, 40);
+            SUCCESS = new Color(0x4C, 0xC9, 0x7A);
+            WARNING = new Color(0xE8, 0xAE, 0x3D);
+            DANGER = new Color(0xE8, 0x6A, 0x6A);
+            DANGER_HOVER = new Color(0xF0, 0x82, 0x82);
+            INFO = new Color(0x6E, 0xA8, 0xE8);
+            SUCCESS_DIM = new Color(0x4C, 0xC9, 0x7A, 34);
+            WARNING_DIM = new Color(0xE8, 0xAE, 0x3D, 34);
+            DANGER_DIM = new Color(0xE8, 0x6A, 0x6A, 34);
+            INFO_DIM = new Color(0x6E, 0xA8, 0xE8, 34);
+        } else {
+            BG_DEEPEST = new Color(0xF1, 0xF5, 0xF9);
+            BG_BASE = new Color(0xF7, 0xF9, 0xFC);
+            BG_SURFACE = new Color(0xFF, 0xFF, 0xFF);
+            BG_SURFACE_ALT = new Color(0xF1, 0xF5, 0xF9);
+            BG_RAISED = new Color(0xE5, 0xEB, 0xF2);
+            BORDER_SUBTLE = new Color(0xD9, 0xE1, 0xEA);
+            BORDER_STRONG = new Color(0xC1, 0xCD, 0xD9);
+            TEXT_PRIMARY = new Color(0x18, 0x25, 0x33);
+            TEXT_SECONDARY = new Color(0x52, 0x61, 0x73);
+            TEXT_MUTED = new Color(0x7A, 0x87, 0x96);
+            TEXT_ON_ACCENT = new Color(0xFF, 0xFF, 0xFF);
+            ACCENT = new Color(0x0F, 0x9F, 0x8C);
+            ACCENT_HOVER = new Color(0x0A, 0x8C, 0x7C);
+            ACCENT_PRESSED = new Color(0x08, 0x73, 0x63);
+            ACCENT_DIM = new Color(0x0F, 0x9F, 0x8C, 42);
+            SUCCESS = new Color(0x1C, 0x9A, 0x54);
+            WARNING = new Color(0xB3, 0x72, 0x00);
+            DANGER = new Color(0xC8, 0x4B, 0x4B);
+            DANGER_HOVER = new Color(0xA9, 0x3A, 0x3A);
+            INFO = new Color(0x3B, 0x74, 0xC5);
+            SUCCESS_DIM = new Color(0x1C, 0x9A, 0x54, 34);
+            WARNING_DIM = new Color(0xB3, 0x72, 0x00, 34);
+            DANGER_DIM = new Color(0xC8, 0x4B, 0x4B, 34);
+            INFO_DIM = new Color(0x3B, 0x74, 0xC5, 34);
         }
 
         UIManager.put("control", BG_BASE);

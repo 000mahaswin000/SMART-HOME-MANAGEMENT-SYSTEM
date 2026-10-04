@@ -4,7 +4,6 @@ import smarthome.automation.AutomationEngine;
 import smarthome.model.Home;
 import smarthome.persistence.FileManager;
 import smarthome.service.*;
-import smarthome.ui.components.SearchField;
 import smarthome.ui.components.SectionTitle;
 import smarthome.ui.components.SideNav;
 import smarthome.ui.theme.Theme;
@@ -34,7 +33,7 @@ import java.time.format.DateTimeFormatter;
  *
  * Visual layout: a fixed-width icon+label sidebar on the left (see
  * {@link SideNav}), a slim header bar across the top (live clock,
- * security-mode indicator, quick global search, save status), and a
+ * security-mode indicator, and save status), and a
  * CardLayout content area on the right holding all nine panels.
  */
 public class MainFrame extends JFrame {
@@ -78,8 +77,6 @@ public class MainFrame extends JFrame {
     private JLabel clockLabel;
     private JLabel securityPillLabel;
     private JLabel saveStatusLabel;
-    private SearchField globalSearch;
-
     public MainFrame(Home home, FileManager fileManager, HomeService homeService,
                       DeviceService deviceService, SensorService sensorService,
                       AutomationService automationService, ScheduleService scheduleService,
@@ -222,13 +219,6 @@ public class MainFrame extends JFrame {
                 new MatteBorder(0, 0, 1, 0, Theme.BORDER_SUBTLE),
                 new EmptyBorder(10, 20, 10, 20)));
 
-        globalSearch = new SearchField("Search devices, sensors, rooms...");
-        globalSearch.onChange(this::handleGlobalSearch);
-
-        JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        left.setOpaque(false);
-        left.add(globalSearch);
-
         JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 14, 0));
         right.setOpaque(false);
 
@@ -251,7 +241,7 @@ public class MainFrame extends JFrame {
         right.add(divider());
         right.add(clockLabel);
 
-        header.add(left, BorderLayout.WEST);
+        header.add(Box.createHorizontalGlue(), BorderLayout.CENTER);
         header.add(right, BorderLayout.EAST);
         return header;
     }
@@ -261,21 +251,6 @@ public class MainFrame extends JFrame {
         d.setPreferredSize(new Dimension(1, 16));
         d.setBackground(Theme.BORDER_SUBTLE);
         return d;
-    }
-
-    /**
-     * Filters the currently visible panel's own search box (if it has
-     * one) using the global search text as a convenience, and always
-     * jumps to the Devices tab on a non-empty query so a name typed
-     * from anywhere in the app resolves somewhere useful. Each panel
-     * still owns its own local filtering logic; this only seeds it.
-     */
-    private void handleGlobalSearch() {
-        String query = globalSearch.getQuery();
-        if (query.isBlank()) return;
-        devicePanel.applyExternalFilter(query);
-        sensorPanel.applyExternalFilter(query);
-        sideNav.select(2);
     }
 
     private void startClock() {

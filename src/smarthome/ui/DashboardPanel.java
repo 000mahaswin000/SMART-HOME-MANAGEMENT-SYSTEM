@@ -4,13 +4,13 @@ import smarthome.model.*;
 import smarthome.ui.components.*;
 import smarthome.ui.theme.Theme;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 /**
  * Dashboard tab: shows summary statistics for the whole home, a
@@ -69,7 +69,7 @@ public class DashboardPanel extends JPanel {
         statsGrid.setAlignmentX(LEFT_ALIGNMENT);
         for (StatCard card : new StatCard[]{roomsCard, devicesCard, activeDevicesCard, sensorsCard,
                 activeSensorsCard, rulesCard, scheduledCard, securityCard, alertsCard, powerCard}) {
-            card.setPreferredSize(new Dimension(198, 118));
+            card.setPreferredSize(new Dimension(198, 138));
             statsGrid.add(card);
         }
         root.add(statsGrid);
@@ -183,35 +183,47 @@ public class DashboardPanel extends JPanel {
     }
 
     public void refresh() {
-        roomsCard.setValue(String.valueOf(mainFrame.getHomeService().getAllRooms().size()));
+        int totalRooms = mainFrame.getHomeService().getAllRooms().size();
+        roomsCard.setValue(String.valueOf(totalRooms));
+        roomsCard.setDetail(totalRooms == 1 ? "1 zone configured" : totalRooms + " zones configured");
 
         int totalDevices = mainFrame.getDeviceService().getAllDevices().size();
         int activeDevices = mainFrame.getDeviceService().getActiveDeviceCount();
         devicesCard.setValue(String.valueOf(totalDevices));
+        devicesCard.setDetail(totalRooms == 0 ? "No rooms configured" : "Across " + totalRooms + " rooms");
         activeDevicesCard.setValue(String.valueOf(activeDevices));
+        activeDevicesCard.setDetail((totalDevices - activeDevices) + " idle or offline");
 
         int totalSensors = mainFrame.getSensorService().getAllSensors().size();
         int activeSensors = mainFrame.getSensorService().getActiveSensorCount();
         sensorsCard.setValue(String.valueOf(totalSensors));
+        sensorsCard.setDetail(totalRooms == 0 ? "No rooms configured" : "Across " + totalRooms + " rooms");
         activeSensorsCard.setValue(String.valueOf(activeSensors));
+        activeSensorsCard.setDetail((totalSensors - activeSensors) + " idle or offline");
 
         int activeRules = mainFrame.getAutomationService().getActiveRuleCount();
         int totalRules = mainFrame.getAutomationService().getAllRules().size();
         rulesCard.setValue(activeRules + " / " + totalRules);
+        rulesCard.setDetail((totalRules - activeRules) + " paused");
 
-        scheduledCard.setValue(String.valueOf(mainFrame.getScheduleService().getAllSchedules().size()));
+        int scheduledTasks = mainFrame.getScheduleService().getAllSchedules().size();
+        scheduledCard.setValue(String.valueOf(scheduledTasks));
+        scheduledCard.setDetail(scheduledTasks == 1 ? "1 task in queue" : "Tasks in queue");
 
         boolean securityOn = mainFrame.getSecurityService().isSecurityModeOn();
         securityCard.setValue(securityOn ? "ARMED" : "DISARMED");
+        securityCard.setDetail(securityOn ? "Monitoring is active" : "Monitoring is paused");
         securityCard.setValueColor(securityOn ? Theme.SUCCESS : Theme.TEXT_SECONDARY);
 
         int unread = mainFrame.getAlertService().getUnreadAlertCount();
         alertsCard.setValue(String.valueOf(unread));
+        alertsCard.setDetail(unread == 0 ? "All caught up" : "Needs your attention");
         alertsCard.setValueColor(unread > 0 ? Theme.WARNING : Theme.TEXT_PRIMARY);
 
         double totalPower = mainFrame.getDeviceService().getAllDevices().stream()
                 .mapToDouble(Device::getCurrentPowerConsumption).sum();
         powerCard.setValue(String.format("%.0f W", totalPower));
+        powerCard.setDetail("From " + totalDevices + " devices");
 
         deviceDonut.setData(List.of(
                 new DonutChart.Segment("Active", activeDevices, Theme.SUCCESS),

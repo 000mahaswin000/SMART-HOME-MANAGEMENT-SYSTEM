@@ -2,6 +2,7 @@ package smarthome.model;
 
 import smarthome.exception.InvalidDeviceStateException;
 
+
 /**
  * Concrete device: Fan. Speed levels 0-5.
  */

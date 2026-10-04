@@ -25,29 +25,28 @@ TO COMPILE AND RUN (from this folder, in a terminal):
     java smarthome.Main
 
 A window titled "Smart Home Automation Simulator" opens, sized
-1280x820, with a dark-themed UI: an icon sidebar on the left listing
+1280x820, with a themed UI: an icon sidebar on the left listing
 9 sections (Dashboard, Rooms, Devices, Sensors, Automation,
 Schedules, Security, Alerts, Logs), and a header bar across the top
-with a global search box, save status, a live security-armed/
-disarmed indicator, and a clock.
+with save status, a live security-armed/disarmed indicator, a clock,
+and a consistent light theme.
 
 On first launch, it auto-creates 6 rooms, 10 devices, 5 sensors, 5
 automation rules, and 3 schedules, and saves everything to
 data/home.dat when you close the window. Closing and reopening
-reloads that saved state instead of re-seeding. Delete
-data/home.dat if you want to see the first-launch seed data again.
+reloads that saved state instead of re-seeding. Delete data/home.dat
+if you want to see the first-launch seed data again.
 
 WHAT'S NEW IN THIS VERSION:
- - Full dark theme (custom palette/fonts pushed through UIManager),
-   replacing the previous default-grey Swing look.
+ - Consistent light theme (custom palette/fonts pushed through UIManager).
  - Sidebar navigation with per-section icons and a live unread-alert
    badge, replacing the plain tab strip.
  - Dashboard: 10 stat tiles, a devices-active and sensors-active
    donut chart, a power-by-room bar chart, and a live recent-events
    feed - all hand-painted, no charting dependency.
  - Search/filter boxes on Devices, Sensors, Automation, Schedules,
-   Alerts and Logs, plus a global search box in the header that
-   jumps to and filters the Devices tab.
+   Alerts and Logs.
+ - Dashboard stat cards include live context details beneath each value.
  - Rooms tab redesigned as a card grid (one card per room, showing
    its devices/sensors at a glance) instead of a table.
  - Security tab redesigned around a large armed/disarmed hero card.

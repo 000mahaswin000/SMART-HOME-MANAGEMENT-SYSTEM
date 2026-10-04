@@ -2,6 +2,7 @@ package smarthome.model;
 
 import smarthome.exception.InvalidDeviceStateException;
 
+
 /**
  * Concrete device: AirConditioner.
  * Temperature range 16-30 C, mode COOL or FAN.

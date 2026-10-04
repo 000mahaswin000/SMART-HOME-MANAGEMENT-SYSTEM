@@ -19,6 +19,10 @@ public class DoorOpenedCondition extends Condition {
         this.requireSecurityMode = requireSecurityMode;
     }
 
+    public boolean isRequireSecurityMode() {
+        return requireSecurityMode;
+    }
+
     @Override
     public boolean evaluate(Home home) {
         if (requireSecurityMode && !home.isSecurityModeOn()) {

@@ -1,5 +1,6 @@
 package smarthome.model;
 
+
 /**
  * Concrete device: SmartLock.
  * Uses "isOn" (inherited) to represent power/connectivity, and a

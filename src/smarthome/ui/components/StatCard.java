@@ -18,6 +18,7 @@ public class StatCard extends Card {
 
     private final JLabel valueLabel = new JLabel("0");
     private final JLabel captionLabel;
+    private final JLabel detailLabel = new JLabel();
     private final JLabel glyphLabel;
     private final Color accent;
 
@@ -46,15 +47,22 @@ public class StatCard extends Card {
         captionLabel.setFont(Theme.FONT_SMALL);
         captionLabel.setForeground(Theme.TEXT_SECONDARY);
 
+        detailLabel.setFont(Theme.FONT_SMALL);
+        detailLabel.setForeground(Theme.TEXT_MUTED);
+        detailLabel.setVisible(false);
+
         JPanel textStack = new JPanel();
         textStack.setOpaque(false);
         textStack.setLayout(new BoxLayout(textStack, BoxLayout.Y_AXIS));
         valueLabel.setAlignmentX(LEFT_ALIGNMENT);
         captionLabel.setAlignmentX(LEFT_ALIGNMENT);
+        detailLabel.setAlignmentX(LEFT_ALIGNMENT);
         textStack.add(Box.createVerticalStrut(10));
         textStack.add(valueLabel);
         textStack.add(Box.createVerticalStrut(2));
         textStack.add(captionLabel);
+        textStack.add(Box.createVerticalStrut(2));
+        textStack.add(detailLabel);
 
         add(top, BorderLayout.NORTH);
         add(textStack, BorderLayout.CENTER);
@@ -73,6 +81,12 @@ public class StatCard extends Card {
 
     public void setCaption(String caption) {
         captionLabel.setText(caption);
+    }
+
+    /** Adds a compact live-context line beneath the card's main value. */
+    public void setDetail(String detail) {
+        detailLabel.setText(detail == null ? "" : detail);
+        detailLabel.setVisible(detail != null && !detail.isBlank());
     }
 
     private static Color tint(Color c) {

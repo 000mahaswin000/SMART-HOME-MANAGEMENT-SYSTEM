@@ -11,7 +11,7 @@ import java.util.Map;
  * Demonstrates COMPOSITION: Home "owns" Rooms, Devices, Sensors,
  * AutomationRules, Schedules, Alerts and Logs - if the Home is
  * destroyed (e.g. not saved), none of these survive independently.
- * This whole object graph is what gets serialised to disk by
+ * This whole object graph is what gets serialized to disk by
  * FileManager.
  *
  * Uses Map<String, X> collections keyed by ID for O(1) lookup, and a

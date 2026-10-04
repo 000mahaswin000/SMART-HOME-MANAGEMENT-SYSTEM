@@ -21,6 +21,18 @@ public class RaiseAlertAction extends Action {
         this.severity = severity;
     }
 
+    public String getAlertType() {
+        return alertType;
+    }
+
+    public String getAlertMessage() {
+        return alertMessage;
+    }
+
+    public Alert.Severity getSeverity() {
+        return severity;
+    }
+
     @Override
     public void execute(Home home, AutomationEngine automationEngine) {
         Alert alert = new Alert(alertType, alertMessage, severity);

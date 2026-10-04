@@ -1,5 +1,6 @@
 package smarthome.model;
 
+
 /**
  * Concrete device: SecurityCamera.
  * Tracks monitoring status and whether motion is currently detected.
