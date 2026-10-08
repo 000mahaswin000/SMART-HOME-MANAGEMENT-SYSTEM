@@ -5,8 +5,6 @@ package smarthome.model;
  */
 public class TemperatureSensor extends Sensor {
 
-    private static final long serialVersionUID = 1L;
-
     private double temperatureCelsius;
 
     public TemperatureSensor(String sensorName, String roomId) {

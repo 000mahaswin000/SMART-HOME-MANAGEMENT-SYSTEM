@@ -1,19 +1,18 @@
 package smarthome.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import smarthome.exception.DeviceNotFoundException;
 import smarthome.exception.RoomNotFoundException;
 import smarthome.model.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Service layer for device management.
  *
- * FACTORY PATTERN: createDevice() centralises the logic of choosing
- * which concrete Device subclass to instantiate based on a type
- * string, so callers (the UI) never need to know about the concrete
- * classes directly - they just pass a type name.
+ * FACTORY PATTERN: createDevice() centralises the logic of choosing which
+ * concrete Device subclass to instantiate based on a type string, so callers
+ * (the UI) never need to know about the concrete classes directly - they just
+ * pass a type name.
  */
 public class DeviceService {
 
@@ -23,37 +22,36 @@ public class DeviceService {
         this.home = home;
     }
 
-    /** The set of device type names the factory understands, used to populate UI combo boxes. */
+    /**
+     * The set of device type names the factory understands, used to populate UI
+     * combo boxes.
+     */
     public static final String[] DEVICE_TYPES = {
-            "Light", "Fan", "Air Conditioner", "Security Camera", "Smart Lock", "Smart TV"
+        "Light", "Fan", "Air Conditioner", "Security Camera", "Smart Lock", "Smart TV"
     };
 
-    /**
-     * FACTORY METHOD: creates the correct concrete Device subclass
-     * based on the given type name, registers it with the home and
-     * with its room, and returns it.
-     *
-     * @param deviceType one of DEVICE_TYPES
-     * @param deviceName human-readable name
-     * @param roomId     room to attach the device to
-     * @return the newly created device
-     * @throws RoomNotFoundException if roomId does not exist
-     */
-    public Device createDevice(String deviceType, String deviceName, String roomId)
-            throws RoomNotFoundException {
+    public Device createDevice(String deviceType, String deviceName, String roomId) throws RoomNotFoundException {
+
         Room room = home.getRooms().get(roomId);
         if (room == null) {
             throw new RoomNotFoundException(roomId);
         }
 
         Device device = switch (deviceType) {
-            case "Light" -> new Light(deviceName, roomId);
-            case "Fan" -> new Fan(deviceName, roomId);
-            case "Air Conditioner" -> new AirConditioner(deviceName, roomId);
-            case "Security Camera" -> new SecurityCamera(deviceName, roomId);
-            case "Smart Lock" -> new SmartLock(deviceName, roomId);
-            case "Smart TV" -> new SmartTV(deviceName, roomId);
-            default -> throw new IllegalArgumentException("Unknown device type: " + deviceType);
+            case "Light" ->
+                new Light(deviceName, roomId);
+            case "Fan" ->
+                new Fan(deviceName, roomId);
+            case "Air Conditioner" ->
+                new AirConditioner(deviceName, roomId);
+            case "Security Camera" ->
+                new SecurityCamera(deviceName, roomId);
+            case "Smart Lock" ->
+                new SmartLock(deviceName, roomId);
+            case "Smart TV" ->
+                new SmartTV(deviceName, roomId);
+            default ->
+                throw new IllegalArgumentException("Unknown device type: " + deviceType);
         };
 
         home.getDevices().put(device.getDeviceId(), device);
@@ -105,7 +103,9 @@ public class DeviceService {
     public int getActiveDeviceCount() {
         int count = 0;
         for (Device d : home.getDevices().values()) {
-            if (d.isOn()) count++;
+            if (d.isOn()) {
+                count++;
+            }
         }
         return count;
     }

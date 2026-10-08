@@ -9,10 +9,12 @@ import java.time.format.DateTimeFormatter;
  */
 public class SystemLog implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    //private static final long serialVersionUID = 1L;
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-    /** Nested enum categorising the type of event. */
+    /**
+     * Nested enum categorising the type of event.
+     */
     public enum EventType {
         DEVICE, SENSOR, AUTOMATION, SCHEDULE, SECURITY, SYSTEM
     }

@@ -1,9 +1,5 @@
 package smarthome.ui;
 
-import smarthome.model.*;
-import smarthome.ui.components.*;
-import smarthome.ui.theme.Theme;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -11,12 +7,15 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import smarthome.model.*;
+import smarthome.ui.components.*;
+import smarthome.ui.theme.Theme;
 
 /**
  * Dashboard tab: shows summary statistics for the whole home, a
- * power-consumption breakdown per room, an active-vs-inactive donut
- * for devices and sensors, and a feed of the most recent system
- * events with per-type icon colouring.
+ * power-consumption breakdown per room, an active-vs-inactive donut for devices
+ * and sensors, and a feed of the most recent system events with per-type icon
+ * colouring.
  */
 public class DashboardPanel extends JPanel {
 
@@ -68,8 +67,8 @@ public class DashboardPanel extends JPanel {
         statsGrid.setOpaque(false);
         statsGrid.setAlignmentX(LEFT_ALIGNMENT);
         for (StatCard card : new StatCard[]{roomsCard, devicesCard, activeDevicesCard, sensorsCard,
-                activeSensorsCard, rulesCard, scheduledCard, securityCard, alertsCard, powerCard}) {
-            card.setPreferredSize(new Dimension(198, 138));
+            activeSensorsCard, rulesCard, scheduledCard, securityCard, alertsCard, powerCard}) {
+            card.setPreferredSize(new Dimension(198, 118));
             statsGrid.add(card);
         }
         root.add(statsGrid);
@@ -89,8 +88,8 @@ public class DashboardPanel extends JPanel {
         powerTitle.setFont(Theme.FONT_HEADING);
         powerTitle.setForeground(Theme.TEXT_PRIMARY);
         powerCardWrap.add(powerTitle, BorderLayout.NORTH);
-        JScrollPane barScroll = new JScrollPane(roomPowerChart,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane barScroll = new JScrollPane(roomPowerChart, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
         barScroll.setBorder(null);
         barScroll.setOpaque(false);
         barScroll.getViewport().setOpaque(false);
@@ -142,12 +141,18 @@ public class DashboardPanel extends JPanel {
 
     private static Color eventColor(SystemLog.EventType type) {
         return switch (type) {
-            case DEVICE -> Theme.ACCENT;
-            case SENSOR -> Theme.INFO;
-            case AUTOMATION -> Theme.WARNING;
-            case SCHEDULE -> Theme.INFO;
-            case SECURITY -> Theme.DANGER;
-            case SYSTEM -> Theme.TEXT_MUTED;
+            case DEVICE ->
+                Theme.ACCENT;
+            case SENSOR ->
+                Theme.INFO;
+            case AUTOMATION ->
+                Theme.WARNING;
+            case SCHEDULE ->
+                Theme.INFO;
+            case SECURITY ->
+                Theme.DANGER;
+            case SYSTEM ->
+                Theme.TEXT_MUTED;
         };
     }
 
@@ -183,47 +188,35 @@ public class DashboardPanel extends JPanel {
     }
 
     public void refresh() {
-        int totalRooms = mainFrame.getHomeService().getAllRooms().size();
-        roomsCard.setValue(String.valueOf(totalRooms));
-        roomsCard.setDetail(totalRooms == 1 ? "1 zone configured" : totalRooms + " zones configured");
+        roomsCard.setValue(String.valueOf(mainFrame.getHomeService().getAllRooms().size()));
 
         int totalDevices = mainFrame.getDeviceService().getAllDevices().size();
         int activeDevices = mainFrame.getDeviceService().getActiveDeviceCount();
         devicesCard.setValue(String.valueOf(totalDevices));
-        devicesCard.setDetail(totalRooms == 0 ? "No rooms configured" : "Across " + totalRooms + " rooms");
         activeDevicesCard.setValue(String.valueOf(activeDevices));
-        activeDevicesCard.setDetail((totalDevices - activeDevices) + " idle or offline");
 
         int totalSensors = mainFrame.getSensorService().getAllSensors().size();
         int activeSensors = mainFrame.getSensorService().getActiveSensorCount();
         sensorsCard.setValue(String.valueOf(totalSensors));
-        sensorsCard.setDetail(totalRooms == 0 ? "No rooms configured" : "Across " + totalRooms + " rooms");
         activeSensorsCard.setValue(String.valueOf(activeSensors));
-        activeSensorsCard.setDetail((totalSensors - activeSensors) + " idle or offline");
 
         int activeRules = mainFrame.getAutomationService().getActiveRuleCount();
         int totalRules = mainFrame.getAutomationService().getAllRules().size();
         rulesCard.setValue(activeRules + " / " + totalRules);
-        rulesCard.setDetail((totalRules - activeRules) + " paused");
 
-        int scheduledTasks = mainFrame.getScheduleService().getAllSchedules().size();
-        scheduledCard.setValue(String.valueOf(scheduledTasks));
-        scheduledCard.setDetail(scheduledTasks == 1 ? "1 task in queue" : "Tasks in queue");
+        scheduledCard.setValue(String.valueOf(mainFrame.getScheduleService().getAllSchedules().size()));
 
         boolean securityOn = mainFrame.getSecurityService().isSecurityModeOn();
         securityCard.setValue(securityOn ? "ARMED" : "DISARMED");
-        securityCard.setDetail(securityOn ? "Monitoring is active" : "Monitoring is paused");
         securityCard.setValueColor(securityOn ? Theme.SUCCESS : Theme.TEXT_SECONDARY);
 
         int unread = mainFrame.getAlertService().getUnreadAlertCount();
         alertsCard.setValue(String.valueOf(unread));
-        alertsCard.setDetail(unread == 0 ? "All caught up" : "Needs your attention");
         alertsCard.setValueColor(unread > 0 ? Theme.WARNING : Theme.TEXT_PRIMARY);
 
         double totalPower = mainFrame.getDeviceService().getAllDevices().stream()
                 .mapToDouble(Device::getCurrentPowerConsumption).sum();
         powerCard.setValue(String.format("%.0f W", totalPower));
-        powerCard.setDetail("From " + totalDevices + " devices");
 
         deviceDonut.setData(List.of(
                 new DonutChart.Segment("Active", activeDevices, Theme.SUCCESS),

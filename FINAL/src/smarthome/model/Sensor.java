@@ -1,7 +1,6 @@
 package smarthome.model;
 
 import java.io.Serializable;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Abstract base class for all sensors.
@@ -9,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class Sensor implements Serializable {
 
     //private static final long serialVersionUID = 1L;
-    private static final AtomicInteger ID_COUNTER = new AtomicInteger(1);
+    private static int ID_COUNTER = 1;
 
     private final String sensorId;
     private String sensorName;
@@ -20,7 +19,7 @@ public abstract class Sensor implements Serializable {
         if (sensorName == null || sensorName.isBlank()) {
             throw new IllegalArgumentException("Sensor name cannot be empty");
         }
-        this.sensorId = "SEN-" + ID_COUNTER.getAndIncrement();
+        this.sensorId = "SEN-" + ID_COUNTER++;
         this.sensorName = sensorName.trim();
         this.roomId = roomId;
         this.active = true;

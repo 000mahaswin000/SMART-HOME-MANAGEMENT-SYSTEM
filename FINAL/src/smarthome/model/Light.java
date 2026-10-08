@@ -2,25 +2,17 @@ package smarthome.model;
 
 import smarthome.exception.InvalidDeviceStateException;
 
-
-/**
- * Concrete device: Light.
- * Demonstrates INHERITANCE (extends Device) and METHOD OVERRIDING.
- */
 public class Light extends Device {
 
-    private static final long serialVersionUID = 1L;
     private static final double WATTS_AT_FULL_BRIGHTNESS = 10.0;
 
-    private int brightness; // 0-100
+    private int brightness;
 
     public Light(String deviceName, String roomId) {
         super(deviceName, roomId);
-        this.brightness = 100; // default brightness when purchased
+        this.brightness = 100;
     }
 
-    /** Overloaded constructor allowing an initial brightness to be supplied.
-     *  Demonstrates CONSTRUCTOR OVERLOADING. */
     public Light(String deviceName, String roomId, int initialBrightness) {
         super(deviceName, roomId);
         setBrightness(initialBrightness);
@@ -45,7 +37,9 @@ public class Light extends Device {
 
     @Override
     public double getCurrentPowerConsumption() {
-        if (!isOn()) return 0.0;
+        if (!isOn()) {
+            return 0.0;
+        }
         return WATTS_AT_FULL_BRIGHTNESS * (brightness / 100.0);
     }
 

@@ -5,8 +5,6 @@ package smarthome.model;
  */
 public class SmokeSensor extends Sensor {
 
-    private static final long serialVersionUID = 1L;
-
     private boolean smokeDetected;
 
     public SmokeSensor(String sensorName, String roomId) {

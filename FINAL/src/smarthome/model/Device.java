@@ -3,7 +3,6 @@ package smarthome.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 import smarthome.interfaces.Controllable;
 import smarthome.interfaces.Switchable;
 
@@ -14,7 +13,7 @@ public abstract class Device implements Switchable, Controllable, Serializable {
     /**
      * Shared counter used to generate friendly sequential IDs.
      */
-    private static final AtomicInteger ID_COUNTER = new AtomicInteger(1);
+    private static int ID_COUNTER = 1;
 
     private final String deviceId;
     private String deviceName;
@@ -27,7 +26,7 @@ public abstract class Device implements Switchable, Controllable, Serializable {
             throw new IllegalArgumentException("Device name cannot be empty");
         }
 
-        this.deviceId = "DEV-" + ID_COUNTER.getAndIncrement();
+        this.deviceId = "DEV-" + ID_COUNTER++;
         this.deviceName = deviceName.trim();
         this.roomId = roomId;
         this.isOn = false;

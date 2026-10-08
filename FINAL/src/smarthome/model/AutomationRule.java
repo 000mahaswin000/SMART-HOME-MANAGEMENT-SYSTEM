@@ -1,22 +1,20 @@
 package smarthome.model;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import smarthome.automation.Action;
 import smarthome.automation.Condition;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
- * Represents a single "IF condition THEN action" automation rule.
- * The rule itself holds a Condition and an Action (STRATEGY PATTERN):
- * it does not know HOW to evaluate the condition or perform the
- * action - it just delegates to the strategy objects it holds.
+ * Represents a single "IF condition THEN action" automation rule. The rule
+ * itself holds a Condition and an Action (STRATEGY PATTERN): it does not know
+ * HOW to evaluate the condition or perform the action - it just delegates to
+ * the strategy objects it holds.
  */
 public class AutomationRule implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private static final AtomicInteger ID_COUNTER = new AtomicInteger(1);
+    //private static final long serialVersionUID = 1L;
+    private static int ID_COUNTER = 1;
 
     private final String ruleId;
     private String ruleName;
@@ -29,7 +27,7 @@ public class AutomationRule implements Serializable {
         if (ruleName == null || ruleName.isBlank()) {
             throw new IllegalArgumentException("Rule name cannot be empty");
         }
-        this.ruleId = "RULE-" + ID_COUNTER.getAndIncrement();
+        this.ruleId = "RULE-" + ID_COUNTER++;
         this.ruleName = ruleName.trim();
         this.condition = condition;
         this.action = action;

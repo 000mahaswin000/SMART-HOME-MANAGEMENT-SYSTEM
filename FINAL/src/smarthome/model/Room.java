@@ -3,12 +3,11 @@ package smarthome.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Room implements Serializable {
 
     //private static final long serialVersionUID = 1L;
-    private static final AtomicInteger ID_COUNTER = new AtomicInteger(1);
+    private static int ID_COUNTER = 1;
 
     private final String roomId;
     private String roomName;
@@ -19,7 +18,7 @@ public class Room implements Serializable {
         if (roomName == null || roomName.isBlank()) {
             throw new IllegalArgumentException("Room name cannot be empty");
         }
-        this.roomId = "ROOM-" + ID_COUNTER.getAndIncrement();
+        this.roomId = "ROOM-" + ID_COUNTER++;
         this.roomName = roomName.trim();
         this.deviceIds = new ArrayList<>();
         this.sensorIds = new ArrayList<>();

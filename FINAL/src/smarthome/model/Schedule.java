@@ -2,20 +2,20 @@ package smarthome.model;
 
 import java.io.Serializable;
 import java.time.LocalTime;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Represents a scheduled device operation, e.g.
- * "07:00 PM -> Turn ON Living Room Light".
- * Uses java.time.LocalTime for the scheduled time-of-day, and
+ * Represents a scheduled device operation, e.g. "07:00 PM -> Turn ON Living
+ * Room Light". Uses java.time.LocalTime for the scheduled time-of-day, and
  * supports an optional daily repeat flag.
  */
 public class Schedule implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private static final AtomicInteger ID_COUNTER = new AtomicInteger(1);
+    //private static final long serialVersionUID = 1L;
+    private static int ID_COUNTER = 1;
 
-    /** The action a schedule can perform on its target device. */
+    /**
+     * The action a schedule can perform on its target device.
+     */
     public enum ScheduleAction {
         TURN_ON, TURN_OFF
     }
@@ -28,18 +28,21 @@ public class Schedule implements Serializable {
     private LocalTime scheduledTime;
     private boolean enabled;
     private final boolean repeatDaily;
-    /** Tracks the last date this schedule fired, to avoid double-firing within the same minute/day. */
+    /**
+     * Tracks the last date this schedule fired, to avoid double-firing within
+     * the same minute/day.
+     */
     private String lastFiredDate;
 
     public Schedule(String scheduleName, String deviceId, String deviceName,
-                     ScheduleAction action, LocalTime scheduledTime, boolean repeatDaily) {
+            ScheduleAction action, LocalTime scheduledTime, boolean repeatDaily) {
         if (scheduleName == null || scheduleName.isBlank()) {
             throw new IllegalArgumentException("Schedule name cannot be empty");
         }
         if (deviceId == null || scheduledTime == null || action == null) {
             throw new IllegalArgumentException("Schedule requires a device, action and time");
         }
-        this.scheduleId = "SCH-" + ID_COUNTER.getAndIncrement();
+        this.scheduleId = "SCH-" + ID_COUNTER++;
         this.scheduleName = scheduleName.trim();
         this.deviceId = deviceId;
         this.deviceName = deviceName;

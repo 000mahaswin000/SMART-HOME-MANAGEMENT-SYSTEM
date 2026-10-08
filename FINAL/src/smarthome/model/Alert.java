@@ -3,18 +3,19 @@ package smarthome.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Represents a security or system alert.
  */
 public class Alert implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private static final AtomicInteger ID_COUNTER = new AtomicInteger(1);
+    //private static final long serialVersionUID = 1L;
+    private static int ID_COUNTER = 1;
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    /** Nested enum for type-safe severity levels. */
+    /**
+     * Nested enum for type-safe severity levels.
+     */
     public enum Severity {
         LOW, MEDIUM, HIGH, CRITICAL
     }
@@ -27,7 +28,7 @@ public class Alert implements Serializable {
     private boolean read;
 
     public Alert(String type, String message, Severity severity) {
-        this.alertId = "ALT-" + ID_COUNTER.getAndIncrement();
+        this.alertId = "ALT-" + ID_COUNTER++;
         this.type = type;
         this.message = message;
         this.severity = severity;
