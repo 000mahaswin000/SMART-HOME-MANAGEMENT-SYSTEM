@@ -285,9 +285,8 @@ public class MainFrame extends JFrame {
      * The AutomationEngine calls back into the UI whenever it raises
      * an alert or logs an automation event, so the relevant panels
      * refresh immediately rather than waiting for the next manual
-     * action. All triggers into these callbacks originate from
-     * Swing action listeners or from ScheduleService's EDT-marshalled
-     * firing, so it is safe to touch Swing components here directly.
+     * action. ScheduleService runs independently of Swing, so its callback
+     * is moved onto the EDT before updating the interface.
      */
     private void wireEngineCallbacks() {
         automationEngine.addAlertCallback(alert -> {
@@ -297,8 +296,10 @@ public class MainFrame extends JFrame {
         });
         automationEngine.addLogCallback(description -> refreshAll());
         scheduleService.setFireCallback(description -> {
-            refreshAll();
-            SectionTitle.showToast(getRootPane(), description, Theme.ACCENT, 2800);
+            SwingUtilities.invokeLater(() -> {
+                refreshAll();
+                SectionTitle.showToast(getRootPane(), description, Theme.ACCENT, 2800);
+            });
         });
     }
 

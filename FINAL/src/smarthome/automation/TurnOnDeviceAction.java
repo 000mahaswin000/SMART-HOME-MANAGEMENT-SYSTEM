@@ -8,7 +8,7 @@ import smarthome.model.Home;
  */
 public class TurnOnDeviceAction extends Action {
 
-    private static final long serialVersionUID = 1L;
+
 
     private final String targetDeviceId;
     private final String targetDeviceName; // kept for readable descriptions even if device later removed

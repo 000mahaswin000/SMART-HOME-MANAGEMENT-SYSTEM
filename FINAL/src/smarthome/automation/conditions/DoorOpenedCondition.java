@@ -6,12 +6,10 @@ import smarthome.model.Home;
 import smarthome.model.Sensor;
 
 /**
- * True if ANY door sensor in the home is currently open,
- * optionally requiring security mode to be ON.
+ * True if ANY door sensor in the home is currently open, optionally requiring
+ * security mode to be ON.
  */
 public class DoorOpenedCondition extends Condition {
-
-    private static final long serialVersionUID = 1L;
 
     private final boolean requireSecurityMode;
 

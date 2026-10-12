@@ -9,7 +9,7 @@ import smarthome.model.Home;
  */
 public class RaiseAlertAction extends Action {
 
-    private static final long serialVersionUID = 1L;
+
 
     private final String alertType;
     private final String alertMessage;
