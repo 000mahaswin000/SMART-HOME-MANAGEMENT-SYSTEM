@@ -9,11 +9,30 @@ import smarthome.interfaces.Switchable;
 //Abstract base class for every smart device in the system
 public abstract class Device implements Switchable, Controllable, Serializable {
 
-    //private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 4711797079774559737L;
     /**
      * Shared counter used to generate friendly sequential IDs.
      */
     private static int ID_COUNTER = 1;
+
+    /** Advances the next ID beyond an ID restored from saved data. */
+    public static synchronized void updateCounterFromId(String deviceId) {
+        if (deviceId == null || !deviceId.startsWith("DEV-")) {
+            return;
+        }
+        try {
+            int id = Integer.parseInt(deviceId.substring(4));
+            if (id >= ID_COUNTER) {
+                ID_COUNTER = id + 1;
+            }
+        } catch (NumberFormatException ignored) {
+            // Ignore malformed IDs and leave the counter unchanged.
+        }
+    }
+
+    private static synchronized String nextId() {
+        return "DEV-" + ID_COUNTER++;
+    }
 
     private final String deviceId;
     private String deviceName;
@@ -26,7 +45,7 @@ public abstract class Device implements Switchable, Controllable, Serializable {
             throw new IllegalArgumentException("Device name cannot be empty");
         }
 
-        this.deviceId = "DEV-" + ID_COUNTER++;
+        this.deviceId = nextId();
         this.deviceName = deviceName.trim();
         this.roomId = roomId;
         this.isOn = false;

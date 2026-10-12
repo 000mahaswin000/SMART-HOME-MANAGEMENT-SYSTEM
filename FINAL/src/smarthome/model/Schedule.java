@@ -10,8 +10,27 @@ import java.time.LocalTime;
  */
 public class Schedule implements Serializable {
 
-    //private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 7257337412087234216L;
     private static int ID_COUNTER = 1;
+
+    /** Advances the next ID beyond an ID restored from saved data. */
+    public static synchronized void updateCounterFromId(String scheduleId) {
+        if (scheduleId == null || !scheduleId.startsWith("SCH-")) {
+            return;
+        }
+        try {
+            int id = Integer.parseInt(scheduleId.substring(4));
+            if (id >= ID_COUNTER) {
+                ID_COUNTER = id + 1;
+            }
+        } catch (NumberFormatException ignored) {
+            // Ignore malformed IDs and leave the counter unchanged.
+        }
+    }
+
+    private static synchronized String nextId() {
+        return "SCH-" + ID_COUNTER++;
+    }
 
     /**
      * The action a schedule can perform on its target device.
@@ -42,7 +61,7 @@ public class Schedule implements Serializable {
         if (deviceId == null || scheduledTime == null || action == null) {
             throw new IllegalArgumentException("Schedule requires a device, action and time");
         }
-        this.scheduleId = "SCH-" + ID_COUNTER++;
+        this.scheduleId = nextId();
         this.scheduleName = scheduleName.trim();
         this.deviceId = deviceId;
         this.deviceName = deviceName;

@@ -7,22 +7,24 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Aggregate root of the entire application state.
- * Demonstrates COMPOSITION: Home "owns" Rooms, Devices, Sensors,
- * AutomationRules, Schedules, Alerts and Logs - if the Home is
- * destroyed (e.g. not saved), none of these survive independently.
- * This whole object graph is what gets serialized to disk by
+ * Aggregate root of the entire application state. Demonstrates COMPOSITION:
+ * Home "owns" Rooms, Devices, Sensors, AutomationRules, Schedules, Alerts and
+ * Logs - if the Home is destroyed (e.g. not saved), none of these survive
+ * independently. This whole object graph is what gets serialized to disk by
  * FileManager.
  *
  * Uses Map<String, X> collections keyed by ID for O(1) lookup, and a
- * List<SystemLog> for the ordered event log, demonstrating correct
- * use of GENERICS and the Collections Framework.
+ * List<SystemLog> for the ordered event log, demonstrating correct use of
+ * GENERICS and the Collections Framework.
  */
 public class Home implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /** Log list is capped so a long-running session doesn't grow the save file without bound. */
+    /**
+     * Log list is capped so a long-running session doesn't grow the save file
+     * without bound.
+     */
     private static final int MAX_LOG_ENTRIES = 500;
 
     private final Map<String, Room> rooms = new LinkedHashMap<>();
@@ -64,10 +66,10 @@ public class Home implements Serializable {
     }
 
     /**
-     * Append a new log entry, trimming the oldest entry if the log
-     * has grown past MAX_LOG_ENTRIES. Centralising this here means
-     * every service that holds a Home reference can log consistently
-     * without needing a separate LogService.
+     * Append a new log entry, trimming the oldest entry if the log has grown
+     * past MAX_LOG_ENTRIES. Centralising this here means every service that
+     * holds a Home reference can log consistently without needing a separate
+     * LogService.
      */
     public void addLog(SystemLog.EventType eventType, String description) {
         logs.add(new SystemLog(eventType, description));
@@ -82,5 +84,18 @@ public class Home implements Serializable {
 
     public void setSecurityModeOn(boolean securityModeOn) {
         this.securityModeOn = securityModeOn;
+    }
+
+    /**
+     * Restores all generated-ID counters from the IDs currently held by this
+     * home. Static counters are not serialized with the Home object.
+     */
+    public void syncIdCounters() {
+        rooms.keySet().forEach(Room::updateCounterFromId);
+        devices.keySet().forEach(Device::updateCounterFromId);
+        sensors.keySet().forEach(Sensor::updateCounterFromId);
+        automationRules.keySet().forEach(AutomationRule::updateCounterFromId);
+        schedules.keySet().forEach(Schedule::updateCounterFromId);
+        alerts.keySet().forEach(Alert::updateCounterFromId);
     }
 }

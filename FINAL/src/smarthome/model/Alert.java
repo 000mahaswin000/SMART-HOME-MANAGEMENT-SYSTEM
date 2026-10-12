@@ -9,9 +9,28 @@ import java.time.format.DateTimeFormatter;
  */
 public class Alert implements Serializable {
 
-    //private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -6340023251709180391L;
     private static int ID_COUNTER = 1;
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    /** Advances the next ID beyond an ID restored from saved data. */
+    public static synchronized void updateCounterFromId(String alertId) {
+        if (alertId == null || !alertId.startsWith("ALT-")) {
+            return;
+        }
+        try {
+            int id = Integer.parseInt(alertId.substring(4));
+            if (id >= ID_COUNTER) {
+                ID_COUNTER = id + 1;
+            }
+        } catch (NumberFormatException ignored) {
+            // Ignore malformed IDs and leave the counter unchanged.
+        }
+    }
+
+    private static synchronized String nextId() {
+        return "ALT-" + ID_COUNTER++;
+    }
 
     /**
      * Nested enum for type-safe severity levels.
@@ -28,7 +47,7 @@ public class Alert implements Serializable {
     private boolean read;
 
     public Alert(String type, String message, Severity severity) {
-        this.alertId = "ALT-" + ID_COUNTER++;
+        this.alertId = nextId();
         this.type = type;
         this.message = message;
         this.severity = severity;
