@@ -8,7 +8,6 @@ import smarthome.exception.InvalidDeviceStateException;
  */
 public class SmartTV extends Device {
 
-    private static final long serialVersionUID = 1L;
     private static final double WATTS_ON = 120.0;
 
     private int volume;

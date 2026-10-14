@@ -7,27 +7,7 @@ import java.io.Serializable;
  */
 public abstract class Sensor implements Serializable {
 
-    private static final long serialVersionUID = -2645952759138334034L;
-    private static int ID_COUNTER = 1;
-
-    /** Advances the next ID beyond an ID restored from saved data. */
-    public static synchronized void updateCounterFromId(String sensorId) {
-        if (sensorId == null || !sensorId.startsWith("SEN-")) {
-            return;
-        }
-        try {
-            int id = Integer.parseInt(sensorId.substring(4));
-            if (id >= ID_COUNTER) {
-                ID_COUNTER = id + 1;
-            }
-        } catch (NumberFormatException ignored) {
-            // Ignore malformed IDs and leave the counter unchanged.
-        }
-    }
-
-    private static synchronized String nextId() {
-        return "SEN-" + ID_COUNTER++;
-    }
+    private static int idCounter = 1;
 
     private final String sensorId;
     private String sensorName;
@@ -38,7 +18,7 @@ public abstract class Sensor implements Serializable {
         if (sensorName == null || sensorName.isBlank()) {
             throw new IllegalArgumentException("Sensor name cannot be empty");
         }
-        this.sensorId = nextId();
+        this.sensorId = "SEN-" + idCounter++;
         this.sensorName = sensorName.trim();
         this.roomId = roomId;
         this.active = true;

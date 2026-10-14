@@ -9,7 +9,6 @@ package smarthome.model;
  */
 public class SecurityCamera extends Device {
 
-    private static final long serialVersionUID = 1L;
     private static final double WATTS_MONITORING = 8.0;
 
     private boolean monitoring;

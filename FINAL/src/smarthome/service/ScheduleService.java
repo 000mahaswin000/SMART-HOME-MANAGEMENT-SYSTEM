@@ -67,7 +67,7 @@ public class ScheduleService {
         return new ArrayList<>(home.getSchedules().values());
     }
 
-    /** Starts checking schedules every 30 seconds. */
+    /** Starts checking schedules every second. */
     public void startScheduler() {
         if (timer != null) {
             return;
@@ -79,7 +79,7 @@ public class ScheduleService {
             public void run() {
                 checkSchedules();
             }
-        }, 0, 30_000);
+        }, 0, 1_000);
     }
 
     /** Stops checking schedules. */

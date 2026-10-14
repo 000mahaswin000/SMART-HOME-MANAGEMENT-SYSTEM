@@ -14,7 +14,6 @@ import java.awt.*;
  */
 public class Card extends JPanel {
 
-    private static final long serialVersionUID = 1L;
 
     private Color background = Theme.BG_SURFACE;
     private Color borderColor = Theme.BORDER_SUBTLE;

@@ -5,7 +5,6 @@ package smarthome.model;
  */
 public class LightSensor extends Sensor {
 
-    private static final long serialVersionUID = 1L;
 
     private int lightLevel; // 0-100
 

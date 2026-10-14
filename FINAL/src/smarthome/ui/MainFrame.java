@@ -38,7 +38,6 @@ import java.time.format.DateTimeFormatter;
  */
 public class MainFrame extends JFrame {
 
-    private static final long serialVersionUID = 1L;
 
     private static final String[] NAV_GLYPHS = {
             "\u25A6", "\u2302", "\u26A1", "\u25C9", "\u2699", "\u23F0", "\u26E8", "\u26A0", "\u2263"
@@ -272,7 +271,6 @@ public class MainFrame extends JFrame {
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "saveNow");
         actionMap.put("saveNow", new AbstractAction() {
-            private static final long serialVersionUID = 1L;
 
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {

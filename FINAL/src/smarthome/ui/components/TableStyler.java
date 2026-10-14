@@ -67,7 +67,6 @@ public final class TableStyler {
 
     /** Zebra-striped body cell renderer with left padding, matching the header padding. */
     private static class StripedRenderer extends DefaultTableCellRenderer {
-        private static final long serialVersionUID = 1L;
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,

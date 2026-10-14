@@ -4,32 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Room implements Serializable {
+public class Room<D extends Device, S extends Sensor> implements Serializable {
 
-    private static final long serialVersionUID = -3026320783976323442L;
-    private static int ID_COUNTER = 1;
-
-    /** Advances the next ID beyond an ID restored from saved data. */
-    public static synchronized void updateCounterFromId(String roomId) {
-        if (roomId == null || !roomId.startsWith("ROOM-")) {
-            return;
-        }
-        try {
-            int id = Integer.parseInt(roomId.substring(5));
-            if (id >= ID_COUNTER) {
-                ID_COUNTER = id + 1;
-            }
-        } catch (NumberFormatException ignored) {
-            // Ignore malformed IDs and leave the counter unchanged.
-        }
-    }
-
-    private static synchronized String nextId() {
-        return "ROOM-" + ID_COUNTER++;
-    }
+    private static int idCounter = 1;
 
     private final String roomId;
     private String roomName;
+    private final List<D> devices;   // Type-safe list of Devices
+    private final List<S> sensors;   // Type-safe list of Sensors
     private final List<String> deviceIds;
     private final List<String> sensorIds;
 
@@ -37,25 +19,54 @@ public class Room implements Serializable {
         if (roomName == null || roomName.isBlank()) {
             throw new IllegalArgumentException("Room name cannot be empty");
         }
-        this.roomId = nextId();
+        this.roomId = "ROOM-" + idCounter++;
         this.roomName = roomName.trim();
+        this.devices = new ArrayList<>();
+        this.sensors = new ArrayList<>();
         this.deviceIds = new ArrayList<>();
         this.sensorIds = new ArrayList<>();
     }
 
-    public String getRoomId() {
-        return roomId;
-    }
-
-    public String getRoomName() {
-        return roomName;
-    }
-
-    public void setRoomName(String roomName) {
-        if (roomName == null || roomName.isBlank()) {
-            throw new IllegalArgumentException("Room name cannot be empty");
+    // --- Device Operations ---
+    public void addDevice(D device) {
+        if (device != null && !devices.contains(device)) {
+            devices.add(device);
+            if (!deviceIds.contains(device.getDeviceId())) {
+                deviceIds.add(device.getDeviceId());
+            }
         }
-        this.roomName = roomName.trim();
+    }
+
+    public void removeDevice(D device) {
+        if (device != null) {
+            devices.remove(device);
+            deviceIds.remove(device.getDeviceId());
+        }
+    }
+
+    public List<D> getDevices() {
+        return devices;
+    }
+
+    // --- Sensor Operations ---
+    public void addSensor(S sensor) {
+        if (sensor != null && !sensors.contains(sensor)) {
+            sensors.add(sensor);
+            if (!sensorIds.contains(sensor.getSensorId())) {
+                sensorIds.add(sensor.getSensorId());
+            }
+        }
+    }
+
+    public void removeSensor(S sensor) {
+        if (sensor != null) {
+            sensors.remove(sensor);
+            sensorIds.remove(sensor.getSensorId());
+        }
+    }
+
+    public List<S> getSensors() {
+        return sensors;
     }
 
     public List<String> getDeviceIds() {
@@ -84,6 +95,21 @@ public class Room implements Serializable {
 
     public void removeSensorId(String sensorId) {
         sensorIds.remove(sensorId);
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        if (roomName == null || roomName.isBlank()) {
+            throw new IllegalArgumentException("Room name cannot be empty");
+        }
+        this.roomName = roomName.trim();
     }
 
     @Override

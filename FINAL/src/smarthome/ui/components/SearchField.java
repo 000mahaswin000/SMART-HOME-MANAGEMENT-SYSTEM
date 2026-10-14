@@ -17,7 +17,6 @@ import java.awt.*;
  */
 public class SearchField extends JPanel {
 
-    private static final long serialVersionUID = 1L;
 
     private final JTextField field = new JTextField();
 

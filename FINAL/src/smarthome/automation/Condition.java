@@ -15,7 +15,6 @@ import java.io.Serializable;
  */
 public abstract class Condition implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
     /**
      * Evaluate this condition against the current state of the home.

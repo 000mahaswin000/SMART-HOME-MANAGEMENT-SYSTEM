@@ -9,7 +9,6 @@ import smarthome.exception.InvalidDeviceStateException;
  */
 public class AirConditioner extends Device {
 
-    private static final long serialVersionUID = 1L;
     public static final int MIN_TEMP = 16;
     public static final int MAX_TEMP = 30;
     private static final double WATTS_COOL_MODE = 1500.0;

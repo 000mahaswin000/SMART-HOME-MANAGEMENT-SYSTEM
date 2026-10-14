@@ -11,7 +11,6 @@ import smarthome.model.Sensor;
  */
 public class MotionDetectedCondition extends Condition {
 
-    private static final long serialVersionUID = 1L;
 
     private final boolean requireSecurityMode;
 

@@ -20,7 +20,6 @@ import java.util.List;
  */
 public class AlertPanel extends JPanel {
 
-    private static final long serialVersionUID = 1L;
 
     private static final String ALL_SEVERITIES = "All Severities";
 
@@ -50,7 +49,6 @@ public class AlertPanel extends JPanel {
 
         tableModel = new DefaultTableModel(
                 new Object[]{"ID", "Type", "Message", "Severity", "Time", "Status"}, 0) {
-            private static final long serialVersionUID = 1L;
 
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -166,7 +164,6 @@ public class AlertPanel extends JPanel {
 
     /** Renders the Severity column as a coloured StatusPill instead of plain coloured text. */
     private static class SeverityRenderer extends DefaultTableCellRenderer {
-        private static final long serialVersionUID = 1L;
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
@@ -183,7 +180,6 @@ public class AlertPanel extends JPanel {
 
     /** Renders the Status column (Read/Unread) as a small dot + label. */
     private static class ReadStatusRenderer extends DefaultTableCellRenderer {
-        private static final long serialVersionUID = 1L;
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,

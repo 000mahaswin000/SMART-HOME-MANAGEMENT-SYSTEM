@@ -13,27 +13,7 @@ import smarthome.automation.Condition;
  */
 public class AutomationRule implements Serializable {
 
-    private static final long serialVersionUID = -3727678494175492895L;
-    private static int ID_COUNTER = 1;
-
-    /** Advances the next ID beyond an ID restored from saved data. */
-    public static synchronized void updateCounterFromId(String ruleId) {
-        if (ruleId == null || !ruleId.startsWith("RULE-")) {
-            return;
-        }
-        try {
-            int id = Integer.parseInt(ruleId.substring(5));
-            if (id >= ID_COUNTER) {
-                ID_COUNTER = id + 1;
-            }
-        } catch (NumberFormatException ignored) {
-            // Ignore malformed IDs and leave the counter unchanged.
-        }
-    }
-
-    private static synchronized String nextId() {
-        return "RULE-" + ID_COUNTER++;
-    }
+    private static int idCounter = 1;
 
     private final String ruleId;
     private String ruleName;
@@ -46,7 +26,7 @@ public class AutomationRule implements Serializable {
         if (ruleName == null || ruleName.isBlank()) {
             throw new IllegalArgumentException("Rule name cannot be empty");
         }
-        this.ruleId = nextId();
+        this.ruleId = "RULE-" + idCounter++;
         this.ruleName = ruleName.trim();
         this.condition = condition;
         this.action = action;

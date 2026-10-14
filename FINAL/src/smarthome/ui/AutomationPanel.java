@@ -29,7 +29,6 @@ import java.util.List;
  */
 public class AutomationPanel extends JPanel {
 
-    private static final long serialVersionUID = 1L;
 
     private static final String[] CONDITION_TYPES = {
             "Temperature Above", "Motion Detected", "Smoke Detected", "Light Level Below", "Door Opened"
@@ -66,7 +65,6 @@ public class AutomationPanel extends JPanel {
         Card formCard = buildFormCard();
 
         tableModel = new DefaultTableModel(new Object[]{"ID", "Name", "Rule", "Enabled"}, 0) {
-            private static final long serialVersionUID = 1L;
 
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -304,7 +302,6 @@ public class AutomationPanel extends JPanel {
     }
 
     private static class EnabledRenderer extends DefaultTableCellRenderer {
-        private static final long serialVersionUID = 1L;
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,

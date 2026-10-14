@@ -19,7 +19,6 @@ import java.util.List;
  */
 public class LogPanel extends JPanel {
 
-    private static final long serialVersionUID = 1L;
 
     private static final String ALL_TYPES = "All Types";
 
@@ -58,7 +57,6 @@ public class LogPanel extends JPanel {
         filterRowWrap.add(countWrap, BorderLayout.EAST);
 
         tableModel = new DefaultTableModel(new Object[]{"Time", "Type", "Description"}, 0) {
-            private static final long serialVersionUID = 1L;
 
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -140,7 +138,6 @@ public class LogPanel extends JPanel {
     }
 
     private static class TypeRenderer extends DefaultTableCellRenderer {
-        private static final long serialVersionUID = 1L;
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,

@@ -30,10 +30,6 @@ public final class Main {
             isFirstLaunch = true;
         }
 
-        // Static ID counters reset when the application restarts, so restore
-        // them from the IDs that were loaded from disk before creating data.
-        home.syncIdCounters();
-
         HomeService homeService = new HomeService(home);
         DeviceService deviceService = new DeviceService(home);
         SensorService sensorService = new SensorService(home);

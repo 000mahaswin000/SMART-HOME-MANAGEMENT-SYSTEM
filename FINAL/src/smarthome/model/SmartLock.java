@@ -11,7 +11,6 @@ package smarthome.model;
  */
 public class SmartLock extends Device {
 
-    private static final long serialVersionUID = 1L;
     private static final double WATTS_IDLE = 1.0;
 
     private boolean locked;

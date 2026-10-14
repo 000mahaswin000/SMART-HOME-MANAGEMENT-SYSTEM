@@ -14,7 +14,6 @@ import java.awt.*;
  */
 public class StatCard extends Card {
 
-    private static final long serialVersionUID = 1L;
 
     private final JLabel valueLabel = new JLabel("0");
     private final JLabel captionLabel;
@@ -95,7 +94,6 @@ public class StatCard extends Card {
 
     /** Small helper: paints its child inside a filled rounded circle rather than a square background. */
     private static class RoundedIcon extends JPanel {
-        private static final long serialVersionUID = 1L;
         private final Color color;
 
         RoundedIcon(JComponent child, Color color) {

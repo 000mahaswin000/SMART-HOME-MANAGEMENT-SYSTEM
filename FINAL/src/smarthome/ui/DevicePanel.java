@@ -25,7 +25,6 @@ import java.util.List;
  */
 public class DevicePanel extends JPanel {
 
-    private static final long serialVersionUID = 1L;
 
     private final MainFrame mainFrame;
     private final DefaultTableModel tableModel;
@@ -51,7 +50,6 @@ public class DevicePanel extends JPanel {
 
         tableModel = new DefaultTableModel(
                 new Object[]{"ID", "Name", "Type", "Room", "Status", "Power (W)"}, 0) {
-            private static final long serialVersionUID = 1L;
 
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -103,7 +101,6 @@ public class DevicePanel extends JPanel {
 
     private JComponent roundedChip(JLabel label) {
         JPanel wrap = new JPanel(new BorderLayout()) {
-            private static final long serialVersionUID = 1L;
 
             @Override
             protected void paintComponent(Graphics g) {
@@ -436,7 +433,6 @@ public class DevicePanel extends JPanel {
 
     /** Colours the Status column so ON/OFF and other states read as a pill rather than plain text. */
     private static class StatusCellRenderer extends DefaultTableCellRenderer {
-        private static final long serialVersionUID = 1L;
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,

@@ -24,7 +24,6 @@ import java.util.List;
  */
 public class SchedulePanel extends JPanel {
 
-    private static final long serialVersionUID = 1L;
 
     private final MainFrame mainFrame;
     private final DefaultTableModel tableModel;
@@ -53,7 +52,6 @@ public class SchedulePanel extends JPanel {
 
         tableModel = new DefaultTableModel(
                 new Object[]{"ID", "Name", "Device", "Action", "Time", "Repeat", "Enabled"}, 0) {
-            private static final long serialVersionUID = 1L;
 
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -243,7 +241,6 @@ public class SchedulePanel extends JPanel {
     }
 
     private static class EnabledRenderer extends DefaultTableCellRenderer {
-        private static final long serialVersionUID = 1L;
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,

@@ -21,7 +21,6 @@ import java.util.List;
  */
 public class RoomPanel extends JPanel {
 
-    private static final long serialVersionUID = 1L;
 
     private final MainFrame mainFrame;
     private List<Room> currentRooms = new ArrayList<>();

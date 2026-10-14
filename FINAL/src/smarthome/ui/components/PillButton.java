@@ -16,7 +16,6 @@ import java.awt.event.MouseEvent;
  */
 public class PillButton extends JButton {
 
-    private static final long serialVersionUID = 1L;
 
     public enum Variant {PRIMARY, NEUTRAL, DANGER, GHOST}
 

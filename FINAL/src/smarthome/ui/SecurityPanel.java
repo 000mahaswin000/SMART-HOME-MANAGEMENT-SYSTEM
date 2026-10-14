@@ -23,7 +23,6 @@ import java.awt.*;
  */
 public class SecurityPanel extends JPanel {
 
-    private static final long serialVersionUID = 1L;
 
     private final MainFrame mainFrame;
     private final JLabel statusLabel = new JLabel();
@@ -46,7 +45,6 @@ public class SecurityPanel extends JPanel {
         center.add(buildHeroCard(), BorderLayout.NORTH);
 
         tableModel = new DefaultTableModel(new Object[]{"Device/Sensor", "Room", "Type", "Status"}, 0) {
-            private static final long serialVersionUID = 1L;
 
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -146,7 +144,6 @@ public class SecurityPanel extends JPanel {
     }
 
     private static class StatusRenderer extends DefaultTableCellRenderer {
-        private static final long serialVersionUID = 1L;
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,

@@ -23,7 +23,6 @@ import java.util.List;
  */
 public class SensorPanel extends JPanel {
 
-    private static final long serialVersionUID = 1L;
 
     private final MainFrame mainFrame;
     private final DefaultTableModel tableModel;
@@ -58,7 +57,6 @@ public class SensorPanel extends JPanel {
 
         tableModel = new DefaultTableModel(
                 new Object[]{"ID", "Name", "Room", "Type", "Value", "Status"}, 0) {
-            private static final long serialVersionUID = 1L;
 
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -336,7 +334,6 @@ public class SensorPanel extends JPanel {
 
     /** Highlights alarm-style values (MOTION DETECTED, SMOKE DETECTED, OPEN) in a warning colour. */
     private static class ValueCellRenderer extends DefaultTableCellRenderer {
-        private static final long serialVersionUID = 1L;
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,

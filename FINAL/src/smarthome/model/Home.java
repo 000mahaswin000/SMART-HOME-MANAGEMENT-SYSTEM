@@ -19,7 +19,6 @@ import java.util.Map;
  */
 public class Home implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
     /**
      * Log list is capped so a long-running session doesn't grow the save file
@@ -84,18 +83,5 @@ public class Home implements Serializable {
 
     public void setSecurityModeOn(boolean securityModeOn) {
         this.securityModeOn = securityModeOn;
-    }
-
-    /**
-     * Restores all generated-ID counters from the IDs currently held by this
-     * home. Static counters are not serialized with the Home object.
-     */
-    public void syncIdCounters() {
-        rooms.keySet().forEach(Room::updateCounterFromId);
-        devices.keySet().forEach(Device::updateCounterFromId);
-        sensors.keySet().forEach(Sensor::updateCounterFromId);
-        automationRules.keySet().forEach(AutomationRule::updateCounterFromId);
-        schedules.keySet().forEach(Schedule::updateCounterFromId);
-        alerts.keySet().forEach(Alert::updateCounterFromId);
     }
 }

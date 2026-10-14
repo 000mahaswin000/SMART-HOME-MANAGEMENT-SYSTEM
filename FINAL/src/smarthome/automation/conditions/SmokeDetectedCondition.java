@@ -10,7 +10,6 @@ import smarthome.model.SmokeSensor;
  */
 public class SmokeDetectedCondition extends Condition {
 
-    private static final long serialVersionUID = 1L;
 
     @Override
     public boolean evaluate(Home home) {

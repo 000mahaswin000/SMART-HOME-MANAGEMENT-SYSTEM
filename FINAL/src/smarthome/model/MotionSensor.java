@@ -5,7 +5,6 @@ package smarthome.model;
  */
 public class MotionSensor extends Sensor {
 
-    private static final long serialVersionUID = 1L;
 
     private boolean motionDetected;
 

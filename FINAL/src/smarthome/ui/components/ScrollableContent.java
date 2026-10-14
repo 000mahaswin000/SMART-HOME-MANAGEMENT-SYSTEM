@@ -15,7 +15,6 @@ import java.awt.*;
  */
 public class ScrollableContent extends JPanel implements Scrollable {
 
-    private static final long serialVersionUID = 1L;
 
     public ScrollableContent() {
         super();

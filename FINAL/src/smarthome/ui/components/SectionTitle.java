@@ -14,7 +14,6 @@ import java.awt.*;
  */
 public class SectionTitle extends JPanel {
 
-    private static final long serialVersionUID = 1L;
 
     public SectionTitle(String title, String subtitle) {
         super();

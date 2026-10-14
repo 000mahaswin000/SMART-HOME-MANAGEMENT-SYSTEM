@@ -11,7 +11,6 @@ import java.awt.*;
  */
 public class WrapLayout extends FlowLayout {
 
-    private static final long serialVersionUID = 1L;
 
     public WrapLayout(int align, int hgap, int vgap) {
         super(align, hgap, vgap);

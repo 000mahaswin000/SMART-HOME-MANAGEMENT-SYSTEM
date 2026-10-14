@@ -14,7 +14,6 @@ import java.util.List;
  */
 public class DonutChart extends JPanel {
 
-    private static final long serialVersionUID = 1L;
 
     public record Segment(String label, double value, Color color) {
     }

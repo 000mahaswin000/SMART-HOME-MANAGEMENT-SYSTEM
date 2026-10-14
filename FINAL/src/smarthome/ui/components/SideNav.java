@@ -20,7 +20,6 @@ import java.util.function.IntConsumer;
  */
 public class SideNav extends JPanel {
 
-    private static final long serialVersionUID = 1L;
 
     private final List<Entry> entries = new ArrayList<>();
     private int selectedIndex = 0;
@@ -65,7 +64,6 @@ public class SideNav extends JPanel {
     }
 
     private class Entry extends JPanel {
-        private static final long serialVersionUID = 1L;
         private boolean selected;
         private boolean hovering;
         private int badgeCount = 0;

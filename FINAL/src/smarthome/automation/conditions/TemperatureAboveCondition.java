@@ -10,7 +10,6 @@ import smarthome.model.TemperatureSensor;
  */
 public class TemperatureAboveCondition extends Condition {
 
-    private static final long serialVersionUID = 1L;
 
     private final double thresholdCelsius;
 

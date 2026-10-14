@@ -14,7 +14,6 @@ import java.awt.*;
  */
 public class StatusPill extends JLabel {
 
-    private static final long serialVersionUID = 1L;
 
     private Color dot;
     private Color fg;

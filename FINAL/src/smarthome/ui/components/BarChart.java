@@ -14,7 +14,6 @@ import java.util.List;
  */
 public class BarChart extends JPanel {
 
-    private static final long serialVersionUID = 1L;
 
     public record Row(String label, double value, String valueText) {
     }
